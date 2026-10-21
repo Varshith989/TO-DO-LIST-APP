@@ -3,11 +3,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
 /**
- * Android emulator routes localhost to 10.0.2.2.
- * When running on physical device with 'adb reverse tcp:5000 tcp:5000', localhost:5000 works.
+ * Android APK network configuration:
+ * - On your local Wi-Fi: http://192.168.29.198:5000/api (routes directly to your PC)
+ * - On Android Emulator: http://10.0.2.2:5000/api
+ * - Via USB adb reverse: http://127.0.0.1:5000/api
  */
 export const DEFAULT_API_URL = Platform.select({
-  android: 'http://10.0.2.2:5000/api',
+  android: 'http://192.168.29.198:5000/api',
   ios: 'http://localhost:5000/api',
   default: 'http://localhost:5000/api',
 });
@@ -25,18 +27,27 @@ export const STORAGE_KEYS = {
   TOKEN: '@taskmaster_token',
   USER: '@taskmaster_user',
   THEME: '@taskmaster_theme',
+  API_URL: '@taskmaster_api_url',
 };
 
-// Request Interceptor: inject Bearer token
+// Request Interceptor: inject custom server URL and Bearer token
 api.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     try {
-      const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+      const [token, customUrl] = await Promise.all([
+        AsyncStorage.getItem(STORAGE_KEYS.TOKEN),
+        AsyncStorage.getItem(STORAGE_KEYS.API_URL),
+      ]);
+
+      if (customUrl) {
+        config.baseURL = customUrl;
+      }
+
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
     } catch (e) {
-      console.warn('[API Interceptor] Failed to read token from storage:', e);
+      console.warn('[API Interceptor] Failed to read storage:', e);
     }
     return config;
   },
@@ -48,7 +59,6 @@ api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     if (error.response?.status === 401) {
-      // Clear expired token
       try {
         await AsyncStorage.multiRemove([STORAGE_KEYS.TOKEN, STORAGE_KEYS.USER]);
       } catch {}
