@@ -9,7 +9,7 @@ export interface ITask {
   priority: TaskPriority;
   category: string[];
   isCompleted: boolean;
-  userId: string;
+  userId?: string;
   compositeScore?: number;
   createdAt: string;
   updatedAt: string;

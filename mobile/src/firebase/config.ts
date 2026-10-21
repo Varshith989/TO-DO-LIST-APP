@@ -1,0 +1,13 @@
+// Firebase Client Configuration
+export const firebaseConfig = {
+  apiKey: "AIzaSyAo5izKnIVO6VMaU5fF8bXFlPvXSzKtGoc",
+  authDomain: "to-do-list-99a24.firebaseapp.com",
+  projectId: "to-do-list-99a24",
+  storageBucket: "to-do-list-99a24.firebasestorage.app",
+  messagingSenderId: "389135264589",
+  appId: "1:389135264589:android:c7fbc1aa0ce13343136504",
+  webClientId: "389135264589-97c4a2601q4bc3ukptrkmgi9brdmecg4.apps.googleusercontent.com",
+};
+
+export const WEB_CLIENT_ID = firebaseConfig.webClientId;
+export const PROJECT_ID = firebaseConfig.projectId;

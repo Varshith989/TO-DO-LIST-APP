@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAuth, signOut } from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { IUser } from '../types/user';
 import { authService } from '../services/authService';
 import { STORAGE_KEYS } from '../services/api';
@@ -10,6 +12,7 @@ interface AuthState {
   isLoading: boolean;
   isInitialized: boolean;
   error: string | null;
+  setSession: (token: string, user: IUser) => Promise<void>;
   login: (email: string, password: string) => Promise<boolean>;
   register: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
@@ -26,6 +29,19 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   clearError: () => set({ error: null }),
 
+  setSession: async (token: string, user: IUser) => {
+    try {
+      await Promise.all([
+        AsyncStorage.setItem(STORAGE_KEYS.TOKEN, token),
+        AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user)),
+      ]);
+      set({ token, user, isLoading: false, error: null });
+    } catch (e) {
+      console.warn('[useAuthStore] Failed to save session:', e);
+      set({ token, user, isLoading: false });
+    }
+  },
+
   checkAuth: async () => {
     try {
       set({ isLoading: true });
@@ -37,13 +53,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       if (token && userStr) {
         const user = JSON.parse(userStr);
         set({ token, user, isInitialized: true, isLoading: false });
-        // Silently verify with /me in background
+        // Silently verify if local backend is being used
         try {
           const freshUser = await authService.getMe();
           set({ user: freshUser });
           await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(freshUser));
         } catch {
-          // Token expired or server unreachable
+          // Token expired or running with Firebase/Demo session
         }
       } else {
         set({ token: null, user: null, isInitialized: true, isLoading: false });
@@ -89,6 +105,12 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: async () => {
     try {
+      try {
+        await signOut(getAuth());
+      } catch {}
+      try {
+        await GoogleSignin.signOut();
+      } catch {}
       await authService.logout();
     } finally {
       set({ token: null, user: null });
