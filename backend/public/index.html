@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskMaster Pro - Mobile App Simulator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4">
+
+  <!-- Desktop wrapper & phone frame -->
+  <div class="w-full max-w-sm h-[840px] bg-slate-900 border-4 border-slate-700/80 rounded-[44px] shadow-2xl flex flex-col overflow-hidden relative shadow-indigo-500/10 ring-1 ring-white/10">
+
+    <!-- Android Camera Punch-hole & Status Bar -->
+    <div class="px-6 pt-3 pb-2 flex items-center justify-between text-xs text-slate-400 select-none z-20 bg-slate-900/90 backdrop-blur-md">
+      <span id="statusBarTime" class="font-semibold text-slate-200">10:45</span>
+      <div class="w-4 h-4 rounded-full bg-slate-950 border border-slate-700 mx-auto"></div>
+      <div class="flex items-center space-x-1 text-slate-400">
+        <span>5G</span>
+        <span>📶</span>
+        <span>🔋</span>
+      </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="appRoot" class="flex-1 flex flex-col overflow-hidden relative">
+
+      <!-- AUTH SCREEN (Shown if not logged in) -->
+      <div id="authScreen" class="flex-1 p-6 flex flex-col justify-center overflow-y-auto">
+        <div class="text-center mb-6">
+          <div class="w-14 h-14 bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3 shadow-lg shadow-indigo-500/10">
+            ⚡
+          </div>
+          <h1 class="text-2xl font-bold tracking-tight text-white">TaskMaster Pro</h1>
+          <p class="text-xs text-slate-400 mt-1">Full-Stack Mobile Engineer Assignment</p>
+        </div>
+
+        <div class="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-5 shadow-xl backdrop-blur-sm">
+          <div class="mb-4">
+            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Email</label>
+            <input id="loginEmail" type="email" value="demo.engineer@taskmaster.dev" class="w-full bg-slate-900 border border-slate-700 text-sm rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors">
+          </div>
+
+          <div class="mb-5">
+            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Password</label>
+            <input id="loginPassword" type="password" value="Password123!" class="w-full bg-slate-900 border border-slate-700 text-sm rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors">
+          </div>
+
+          <button id="btnLogin" onclick="login()" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] text-white font-semibold py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-indigo-600/30">
+            Sign In
+          </button>
+
+          <button onclick="fillDemo()" class="w-full mt-2.5 bg-slate-700/60 hover:bg-slate-700 text-slate-300 font-medium py-2 rounded-xl text-xs transition-colors">
+            ⚡ Quick Demo Autofill
+          </button>
+        </div>
+
+        <div id="authError" class="hidden mt-4 p-3 rounded-xl bg-red-950/60 border border-red-800/50 text-red-300 text-xs text-center font-medium"></div>
+      </div>
+
+      <!-- DASHBOARD SCREEN (Shown when logged in) -->
+      <div id="dashboardScreen" class="hidden flex-1 flex flex-col overflow-hidden">
+        
+        <!-- App Bar -->
+        <div class="px-5 py-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/60 backdrop-blur-sm">
+          <div>
+            <span class="text-[10px] font-bold tracking-wider text-indigo-400 uppercase">TaskMaster Pro</span>
+            <h2 id="userGreeting" class="text-base font-bold text-white leading-tight">Hello, Engineer 👋</h2>
+          </div>
+          <button onclick="logout()" class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs text-slate-400 hover:text-white hover:bg-slate-700 transition-colors" title="Log Out">
+            🚪
+          </button>
+        </div>
+
+        <!-- Scrollable content area -->
+        <div class="flex-1 overflow-y-auto px-4 py-3 space-y-3 scrollbar-hide">
+          
+          <!-- Metrics Banner -->
+          <div class="grid grid-cols-3 gap-2 bg-slate-800/60 border border-slate-700/50 rounded-2xl p-3">
+            <div class="text-center">
+              <div id="metricTotal" class="text-lg font-extrabold text-indigo-400">0</div>
+              <div class="text-[10px] font-medium text-slate-400 uppercase">Total</div>
+            </div>
+            <div class="text-center border-x border-slate-700/50">
+              <div id="metricCompleted" class="text-lg font-extrabold text-emerald-400">0%</div>
+              <div class="text-[10px] font-medium text-slate-400 uppercase">Done</div>
+            </div>
+            <div class="text-center">
+              <div id="metricUrgent" class="text-lg font-extrabold text-red-400">0</div>
+              <div class="text-[10px] font-medium text-slate-400 uppercase">Urgent</div>
+            </div>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="relative">
+            <span class="absolute left-3 top-2.5 text-xs text-slate-500">🔍</span>
+            <input id="searchInput" oninput="renderTasks()" type="text" placeholder="Search tasks, categories..." class="w-full bg-slate-800/80 border border-slate-700/60 rounded-xl pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+          </div>
+
+          <!-- Filter Pills (All / Active / Completed) -->
+          <div class="flex p-1 bg-slate-800/80 border border-slate-700/50 rounded-xl text-xs font-semibold">
+            <button onclick="setFilter('all')" id="filterBtnAll" class="flex-1 py-1.5 rounded-lg bg-indigo-600 text-white transition-colors">All</button>
+            <button onclick="setFilter('pending')" id="filterBtnPending" class="flex-1 py-1.5 rounded-lg text-slate-400 hover:text-white transition-colors">Active</button>
+            <button onclick="setFilter('completed')" id="filterBtnCompleted" class="flex-1 py-1.5 rounded-lg text-slate-400 hover:text-white transition-colors">Done</button>
+          </div>
+
+          <!-- Category Chip Group -->
+          <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-hide text-xs" id="categoryChips">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Sorting Mode Pill -->
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Sorted By</span>
+            <button onclick="toggleSortMode()" id="sortBadge" class="px-2.5 py-1 rounded-full bg-indigo-950/80 border border-indigo-700/60 text-indigo-300 text-[11px] font-bold flex items-center gap-1 hover:bg-indigo-900 transition-colors">
+              ⚡ Smart Composite Score ▾
+            </button>
+          </div>
+
+          <!-- Task Card FlatList -->
+          <div id="taskList" class="space-y-2.5 pb-20">
+            <!-- Dynamic Task Cards -->
+          </div>
+        </div>
+
+        <!-- Floating Action Button (+ New Task) -->
+        <button onclick="openCreateModal()" class="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-2xl font-light shadow-xl shadow-indigo-600/40 flex items-center justify-center transition-transform active:scale-95 border border-indigo-400/30 z-30">
+          +
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- CREATE TASK MODAL -->
+    <div id="createModal" class="hidden absolute inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex flex-col justify-end">
+      <div class="bg-slate-900 border-t border-slate-700 rounded-t-[32px] p-5 max-h-[90%] overflow-y-auto space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <h3 class="text-base font-bold text-white">Create New Task</h3>
+          <button onclick="closeCreateModal()" class="text-slate-400 hover:text-white text-lg">✕</button>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Title *</label>
+          <input id="newTitle" type="text" placeholder="e.g. Profile Android memory leak" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Description</label>
+          <textarea id="newDescription" rows="2" placeholder="Add acceptance criteria..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+
+        <!-- Priority Selector -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Priority Level</label>
+          <div class="grid grid-cols-4 gap-1.5" id="priorityOptions">
+            <button type="button" onclick="selectPriority('urgent')" id="pBtn-urgent" class="py-1.5 rounded-lg border border-red-500/40 bg-red-950/50 text-red-400 text-xs font-bold text-center">Urgent</button>
+            <button type="button" onclick="selectPriority('high')" id="pBtn-high" class="py-1.5 rounded-lg border border-amber-500/40 bg-amber-950/30 text-amber-400 text-xs font-bold text-center">High</button>
+            <button type="button" onclick="selectPriority('medium')" id="pBtn-medium" class="py-1.5 rounded-lg border border-indigo-500/60 bg-indigo-900/60 text-indigo-300 text-xs font-bold text-center ring-2 ring-indigo-500">Medium</button>
+            <button type="button" onclick="selectPriority('low')" id="pBtn-low" class="py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-950/30 text-emerald-400 text-xs font-bold text-center">Low</button>
+          </div>
+        </div>
+
+        <!-- Deadline Hours -->
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Due In (Hours)</label>
+            <input id="newDueHours" type="number" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Hard Cutoff (Hours)</label>
+            <input id="newDeadlineHours" type="number" value="8" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Category Tag</label>
+          <input id="newCategory" type="text" value="Engineering" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <button onclick="submitNewTask()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-xs transition-colors shadow-lg shadow-indigo-600/30 mt-2">
+          Create Task
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const API_BASE = window.location.origin + '/api';
+    let token = localStorage.getItem('taskmaster_token') || '';
+    let currentUser = null;
+    let allTasks = [];
+    let currentFilter = 'all';
+    let currentCategory = 'All';
+    let currentSort = 'composite';
+    let selectedPriority = 'medium';
+
+    // Clock
+    setInterval(() => {
+      const d = new Date();
+      document.getElementById('statusBarTime').innerText = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }, 1000);
+
+    function fillDemo() {
+      document.getElementById('loginEmail').value = 'demo.engineer@taskmaster.dev';
+      document.getElementById('loginPassword').value = 'Password123!';
+    }
+
+    async function login() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const errBox = document.getElementById('authError');
+      errBox.classList.add('hidden');
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Login failed');
+
+        token = data.token;
+        currentUser = data.user;
+        localStorage.setItem('taskmaster_token', token);
+        showDashboard();
+      } catch (err) {
+        errBox.innerText = '⚠️ ' + err.message;
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    function logout() {
+      token = '';
+      localStorage.removeItem('taskmaster_token');
+      document.getElementById('dashboardScreen').classList.add('hidden');
+      document.getElementById('authScreen').classList.remove('hidden');
+    }
+
+    async function loadTasks() {
+      try {
+        const res = await fetch(`${API_BASE}/tasks?sort=${currentSort}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.status === 401) return logout();
+        const data = await res.json();
+        allTasks = data.tasks || [];
+        renderTasks();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function showDashboard() {
+      document.getElementById('authScreen').classList.add('hidden');
+      document.getElementById('dashboardScreen').classList.remove('hidden');
+      if (currentUser) {
+        document.getElementById('userGreeting').innerText = `Hello, ${currentUser.name.split(' ')[0]} 👋`;
+      }
+      loadTasks();
+    }
+
+    function setFilter(f) {
+      currentFilter = f;
+      ['all', 'pending', 'completed'].forEach(id => {
+        const btn = document.getElementById('filterBtn' + id.charAt(0).toUpperCase() + id.slice(1));
+        if (id === f) {
+          btn.className = 'flex-1 py-1.5 rounded-lg bg-indigo-600 text-white transition-colors';
+        } else {
+          btn.className = 'flex-1 py-1.5 rounded-lg text-slate-400 hover:text-white transition-colors';
+        }
+      });
+      renderTasks();
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      renderTasks();
+    }
+
+    function toggleSortMode() {
+      const modes = ['composite', 'deadline', 'priority', 'createdAt'];
+      const nextIdx = (modes.indexOf(currentSort) + 1) % modes.length;
+      currentSort = modes[nextIdx];
+
+      const labels = {
+        composite: '⚡ Smart Composite Score ▾',
+        deadline: '⏳ Deadline (Soonest) ▾',
+        priority: '🔥 Priority (Urgent First) ▾',
+        createdAt: '✨ Recently Added ▾'
+      };
+      document.getElementById('sortBadge').innerText = labels[currentSort];
+      loadTasks();
+    }
+
+    function selectPriority(p) {
+      selectedPriority = p;
+      ['urgent', 'high', 'medium', 'low'].forEach(lvl => {
+        const el = document.getElementById('pBtn-' + lvl);
+        if (lvl === p) {
+          el.classList.add('ring-2', 'ring-indigo-500');
+        } else {
+          el.classList.remove('ring-2', 'ring-indigo-500');
+        }
+      });
+    }
+
+    function openCreateModal() {
+      document.getElementById('createModal').classList.remove('hidden');
+    }
+
+    function closeCreateModal() {
+      document.getElementById('createModal').classList.add('hidden');
+    }
+
+    async function submitNewTask() {
+      const title = document.getElementById('newTitle').value.trim();
+      const description = document.getElementById('newDescription').value.trim();
+      const dueHours = parseFloat(document.getElementById('newDueHours').value) || 2;
+      const deadlineHours = parseFloat(document.getElementById('newDeadlineHours').value) || 4;
+      const category = document.getElementById('newCategory').value.trim() || 'General';
+
+      if (!title) return alert('Title is required');
+
+      const now = Date.now();
+      const dueDateTime = new Date(now + dueHours * 3600 * 1000).toISOString();
+      const deadline = new Date(now + deadlineHours * 3600 * 1000).toISOString();
+
+      try {
+        const res = await fetch(`${API_BASE}/tasks`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            priority: selectedPriority,
+            dueDateTime,
+            deadline,
+            category: [category]
+          })
+        });
+        if (res.ok) {
+          closeCreateModal();
+          document.getElementById('newTitle').value = '';
+          document.getElementById('newDescription').value = '';
+          loadTasks();
+        }
+      } catch (e) {
+        alert('Failed to create task');
+      }
+    }
+
+    async function toggleTask(id) {
+      // Optimistic
+      const task = allTasks.find(t => t._id === id);
+      if (task) task.isCompleted = !task.isCompleted;
+      renderTasks();
+
+      await fetch(`${API_BASE}/tasks/${id}/toggle`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      loadTasks();
+    }
+
+    async function deleteTask(id) {
+      if (!confirm('Delete this task?')) return;
+      allTasks = allTasks.filter(t => t._id !== id);
+      renderTasks();
+
+      await fetch(`${API_BASE}/tasks/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      loadTasks();
+    }
+
+    function renderTasks() {
+      const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+
+      // Categories set
+      const catSet = new Set(['All', 'Engineering', 'Work', 'Personal', 'Fitness']);
+      allTasks.forEach(t => t.category?.forEach(c => catSet.add(c)));
+      
+      const chipContainer = document.getElementById('categoryChips');
+      chipContainer.innerHTML = Array.from(catSet).map(c => `
+        <button onclick="setCategory('${c}')" class="px-2.5 py-1 rounded-full whitespace-nowrap text-xs transition-colors ${currentCategory === c ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-800 text-slate-400 border border-slate-700/60 hover:text-white'}">
+          ${c}
+        </button>
+      `).join('');
+
+      let filtered = allTasks.filter(t => {
+        if (currentFilter === 'completed' && !t.isCompleted) return false;
+        if (currentFilter === 'pending' && t.isCompleted) return false;
+        if (currentCategory !== 'All' && !t.category?.includes(currentCategory)) return false;
+        if (search) {
+          const matchTitle = t.title.toLowerCase().includes(search);
+          const matchDesc = t.description?.toLowerCase().includes(search);
+          if (!matchTitle && !matchDesc) return false;
+        }
+        return true;
+      });
+
+      // Update Metrics
+      const total = allTasks.length;
+      const completed = allTasks.filter(t => t.isCompleted).length;
+      const urgent = allTasks.filter(t => !t.isCompleted && t.priority === 'urgent').length;
+      document.getElementById('metricTotal').innerText = total;
+      document.getElementById('metricCompleted').innerText = total > 0 ? Math.round((completed / total) * 100) + '%' : '0%';
+      document.getElementById('metricUrgent').innerText = urgent;
+
+      const taskList = document.getElementById('taskList');
+      if (filtered.length === 0) {
+        taskList.innerHTML = `
+          <div class="text-center py-12 px-4">
+            <div class="text-3xl mb-2">✨</div>
+            <div class="text-sm font-bold text-white">No tasks found</div>
+            <div class="text-xs text-slate-400 mt-1">Tap the '+' button to add your first task.</div>
+          </div>
+        `;
+        return;
+      }
+
+      const priorityColors = {
+        urgent: { border: 'border-l-red-500', badge: 'bg-red-950/70 text-red-400 border-red-800/60' },
+        high: { border: 'border-l-amber-500', badge: 'bg-amber-950/70 text-amber-400 border-amber-800/60' },
+        medium: { border: 'border-l-indigo-500', badge: 'bg-indigo-950/70 text-indigo-400 border-indigo-800/60' },
+        low: { border: 'border-l-emerald-500', badge: 'bg-emerald-950/70 text-emerald-400 border-emerald-800/60' }
+      };
+
+      taskList.innerHTML = filtered.map(t => {
+        const pc = priorityColors[t.priority] || priorityColors.medium;
+        const score = t.compositeScore !== undefined ? Math.round(t.compositeScore) : '';
+        const deadlineDate = new Date(t.deadline);
+        const hoursLeft = Math.round((deadlineDate - Date.now()) / (3600 * 1000));
+        let deadlineLabel = hoursLeft < 0 ? `Overdue ${Math.abs(hoursLeft)}h` : `Due in ${hoursLeft}h`;
+
+        return `
+          <div class="bg-slate-800/90 border border-slate-700/60 border-l-4 ${pc.border} rounded-2xl p-3 shadow-md hover:border-slate-600 transition-all ${t.isCompleted ? 'opacity-65' : ''}">
+            <div class="flex items-center justify-between text-[11px] mb-2">
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded-full border text-[10px] font-extrabold uppercase ${pc.badge}">
+                  ${t.priority}
+                </span>
+                <span class="px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-400 text-[10px] font-semibold">
+                  ⏰ ${deadlineLabel}
+                </span>
+              </div>
+              ${score && !t.isCompleted ? `<span class="text-[10px] font-bold text-slate-400">⚡ ${score} pts</span>` : ''}
+            </div>
+
+            <div class="flex items-start gap-2.5 mb-2">
+              <button onclick="toggleTask('${t._id}')" class="w-5 h-5 mt-0.5 rounded-md border flex items-center justify-center text-xs transition-colors ${t.isCompleted ? 'bg-emerald-500 border-emerald-500 text-white font-bold' : 'border-slate-600 hover:border-slate-400'}">
+                ${t.isCompleted ? '✓' : ''}
+              </button>
+              <div class="flex-1">
+                <h4 class="text-xs font-bold leading-tight ${t.isCompleted ? 'line-through text-slate-400' : 'text-white'}">${t.title}</h4>
+                ${t.description ? `<p class="text-[11px] text-slate-400 mt-1 line-clamp-2">${t.description}</p>` : ''}
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-1.5 border-t border-slate-700/40 text-[11px]">
+              <div class="flex gap-1 flex-wrap">
+                ${(t.category || []).map(c => `<span class="text-[10px] text-slate-400">#${c}</span>`).join(' ')}
+              </div>
+              <button onclick="deleteTask('${t._id}')" class="text-slate-500 hover:text-red-400 text-xs px-1">🗑️</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Auto-login if token saved
+    if (token) {
+      showDashboard();
+    }
+  </script>
+</body>
+</html>

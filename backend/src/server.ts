@@ -1,11 +1,15 @@
 import { createApp } from './app.js';
 import { connectDB, disconnectDB } from './config/db.js';
 import { ENV } from './config/env.js';
+import { autoSeedIfEmpty } from './utils/seed.js';
 
 async function bootstrap() {
   try {
     // Connect to database (with automatic in-memory fallback if needed)
     await connectDB();
+
+    // Auto-seed demo tasks and user if database is clean
+    await autoSeedIfEmpty();
 
     const app = createApp();
 

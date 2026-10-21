@@ -2,15 +2,24 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import routes from './routes/index.js';
 import { errorHandler, AppError } from './middleware/error.middleware.js';
 import { ENV } from './config/env.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export function createApp(): Application {
   const app: Application = express();
 
-  // Security HTTP headers
-  app.use(helmet());
+  // Security HTTP headers (relaxed CSP for simulator assets)
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+    })
+  );
 
   // CORS configuration
   app.use(
@@ -31,11 +40,19 @@ export function createApp(): Application {
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+  // Serve static interactive mobile simulator
+  const publicPath = path.join(__dirname, '../public');
+  app.use('/public', express.static(publicPath));
+  app.get('/app', (_req: Request, res: Response) => {
+    res.sendFile(path.join(publicPath, 'index.html'));
+  });
+
   // Root welcome route
   app.get('/', (_req: Request, res: Response) => {
     res.status(200).json({
       name: 'TaskMaster Pro API',
       version: '1.0.0',
+      simulator: '/app',
       docs: '/api/health',
       endpoints: {
         auth: '/api/auth',
