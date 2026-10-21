@@ -2,10 +2,11 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow read and write access to all authenticated users
-    // During development / testing, you can use: allow read, write: if true;
-    match /{document=**} {
-      allow read, write: if true;
+    match /tasks/{taskId} {
+      // Allow users to read, update, or delete only their own tasks
+      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      // Allow authenticated users to create tasks assigned to themselves
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
     }
   }
 }

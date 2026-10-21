@@ -1224,7 +1224,9 @@
       doc, 
       updateDoc, 
       deleteDoc, 
-      onSnapshot 
+      onSnapshot,
+      query,
+      where
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // User's Firebase Configuration
@@ -1601,9 +1603,11 @@
         firestoreUnsubscribe = null;
       }
       currentUser = null;
+      allTasks = [];
       localStorage.removeItem('taskmaster_local_user');
       showToast('Logged out', 'info');
       showAuth();
+      renderAll();
     };
 
     function showAuth() {
@@ -1630,54 +1634,71 @@
     }
 
     // -------------------------------------------------------------
-    // TASK SYNC (FIRESTORE + LOCAL RECOVERY)
+    // TASK SYNC (FIRESTORE + USER-ISOLATED STORAGE)
     // -------------------------------------------------------------
+    function getUserStorageKey() {
+      return 'taskmaster_tasks_' + (currentUser?.uid || 'guest');
+    }
+
     function loadTasks() {
-      // 1. Try real-time Firestore synchronization
+      // 1. Clear previous user's tasks from memory immediately
+      allTasks = [];
+      renderAll();
+
+      // 2. Real-time Firestore synchronization scoped ONLY to currentUser.uid
       if (fbDb && currentUser && currentUser.uid !== 'demo-engineer-uid') {
         try {
           const colRef = collection(fbDb, 'tasks');
+          // Strict user scoping via Firestore query
+          const q = query(colRef, where('userId', '==', currentUser.uid));
           if (firestoreUnsubscribe) firestoreUnsubscribe();
 
-          firestoreUnsubscribe = onSnapshot(colRef, (snapshot) => {
+          firestoreUnsubscribe = onSnapshot(q, (snapshot) => {
             const list = [];
             snapshot.forEach(docSnap => {
               const d = docSnap.data();
-              list.push({ _id: docSnap.id, ...d });
+              // Strict double-check: never allow any document not belonging to currentUser
+              if (d.userId === currentUser.uid) {
+                list.push({ _id: docSnap.id, ...d });
+              }
             });
             allTasks = list;
+            saveLocalTasks();
             renderAll();
           }, (err) => {
-            console.warn('[Firestore] Falling back to local storage:', err);
+            console.warn('[Firestore] Falling back to user-scoped local storage:', err);
             loadLocalTasks();
           });
           return;
         } catch (e) {
-          console.warn('[Firestore] Error attaching listener:', e);
+          console.warn('[Firestore] Error attaching user-scoped listener:', e);
         }
       }
 
-      // 2. Local Storage fallback / Demo Mode
+      // 3. Local Storage fallback / Demo Mode
       loadLocalTasks();
     }
 
     function loadLocalTasks() {
-      const stored = localStorage.getItem('taskmaster_tasks_v2');
+      const key = getUserStorageKey();
+      const stored = localStorage.getItem(key);
       if (stored) {
         try {
           allTasks = JSON.parse(stored);
         } catch(e) {
-          allTasks = getDefaultSeedTasks();
+          allTasks = currentUser?.uid === 'demo-engineer-uid' ? getDefaultSeedTasks() : [];
         }
       } else {
-        allTasks = getDefaultSeedTasks();
+        // Only demo mode starts with default seed tasks; real users start with clean slate
+        allTasks = currentUser?.uid === 'demo-engineer-uid' ? getDefaultSeedTasks() : [];
         saveLocalTasks();
       }
       renderAll();
     }
 
     function saveLocalTasks() {
-      localStorage.setItem('taskmaster_tasks_v2', JSON.stringify(allTasks));
+      const key = getUserStorageKey();
+      localStorage.setItem(key, JSON.stringify(allTasks));
     }
 
     // -------------------------------------------------------------
@@ -1718,6 +1739,7 @@
         if (fbDb && currentUser && currentUser.uid !== 'demo-engineer-uid') {
           // Cloud Firestore
           if (id) {
+            payload.userId = currentUser.uid;
             await updateDoc(doc(fbDb, 'tasks', id), payload);
             showToast('Task updated in Cloud Firestore! ☁️', 'success');
           } else {
