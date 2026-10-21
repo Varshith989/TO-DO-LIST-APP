@@ -1,3 +1,6 @@
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
 // Firebase Client Configuration
 export const firebaseConfig = {
   apiKey: "AIzaSyAo5izKnIVO6VMaU5fF8bXFlPvXSzKtGoc",
@@ -11,3 +14,6 @@ export const firebaseConfig = {
 
 export const WEB_CLIENT_ID = firebaseConfig.webClientId;
 export const PROJECT_ID = firebaseConfig.projectId;
+
+export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+export const auth = getAuth(app);

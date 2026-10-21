@@ -11,14 +11,13 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
-  getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithCredential,
   signInAnonymously,
   GoogleAuthProvider,
   updateProfile,
-} from '@react-native-firebase/auth';
+} from 'firebase/auth';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { AuthStackParamList } from '../../types/navigation';
 import { useAuthStore } from '../../store/useAuthStore';
@@ -26,7 +25,7 @@ import { useTaskStore } from '../../store/useTaskStore';
 import { useThemeStore } from '../../store/useThemeStore';
 import { getTheme } from '../../theme/theme';
 import { Input } from '../../components/common/Input';
-import { WEB_CLIENT_ID, PROJECT_ID } from '../../firebase/config';
+import { auth, WEB_CLIENT_ID, PROJECT_ID } from '../../firebase/config';
 
 // Compatibility shim for auth.GoogleAuthProvider.credential(idToken)
 const authHelper = {
@@ -142,10 +141,9 @@ export const LoginScreen: React.FC<Props> = () => {
     const cleanEmail = email.trim();
 
     try {
-      const fbAuth = getAuth();
       if (mode === 'signin') {
         try {
-          const userCred = await signInWithEmailAndPassword(fbAuth, cleanEmail, password);
+          const userCred = await signInWithEmailAndPassword(auth, cleanEmail, password);
           const fbUser = userCred.user;
           const token = (await fbUser.getIdToken()) || fbUser.uid;
           await setSession(token, {
@@ -168,7 +166,7 @@ export const LoginScreen: React.FC<Props> = () => {
       } else {
         // Register mode
         try {
-          const userCred = await createUserWithEmailAndPassword(fbAuth, cleanEmail, password);
+          const userCred = await createUserWithEmailAndPassword(auth, cleanEmail, password);
           const fbUser = userCred.user;
           if (name.trim()) {
             await updateProfile(fbUser, { displayName: name.trim() });
@@ -217,8 +215,7 @@ export const LoginScreen: React.FC<Props> = () => {
 
       // Create Firebase credential using auth.GoogleAuthProvider.credential(idToken)
       const googleCredential = authHelper.GoogleAuthProvider.credential(idToken);
-      const fbAuth = getAuth();
-      const userCredential = await signInWithCredential(fbAuth, googleCredential);
+      const userCredential = await signInWithCredential(auth, googleCredential);
       const fbUser = userCredential.user;
 
       const token = (await fbUser.getIdToken()) || fbUser.uid;
@@ -259,8 +256,7 @@ export const LoginScreen: React.FC<Props> = () => {
     try {
       // 1. Try Firebase anonymous authentication if enabled
       try {
-        const fbAuth = getAuth();
-        const anonCred = await signInAnonymously(fbAuth);
+        const anonCred = await signInAnonymously(auth);
         const fbUser = anonCred.user;
         const token = (await fbUser.getIdToken()) || fbUser.uid;
         await setSession(token, {

@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAuth, signOut } from '@react-native-firebase/auth';
+import { signOut } from 'firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { auth } from '../firebase/config';
 import { IUser } from '../types/user';
 import { authService } from '../services/authService';
 import { STORAGE_KEYS } from '../services/api';
@@ -53,7 +54,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       if (token && userStr) {
         const user = JSON.parse(userStr);
         set({ token, user, isInitialized: true, isLoading: false });
-        // Silently verify if local backend is being used
         try {
           const freshUser = await authService.getMe();
           set({ user: freshUser });
@@ -106,7 +106,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   logout: async () => {
     try {
       try {
-        await signOut(getAuth());
+        await signOut(auth);
       } catch {}
       try {
         await GoogleSignin.signOut();
