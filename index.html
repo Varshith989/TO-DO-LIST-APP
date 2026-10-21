@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,6 +29,8 @@
       if (theme === 'dark') {
         html.classList.add('dark');
         html.classList.remove('light');
+        if (document.body) { document.body.classList.add('dark'); document.body.classList.remove('light'); }
+        if (document.body) { document.body.classList.add('dark'); document.body.classList.remove('light'); }
         if (icon) icon.innerText = '🌙';
         if (authIcon) authIcon.innerText = '🌙';
         if (btn) btn.setAttribute('title', 'Switch to Light Theme');
@@ -36,6 +38,8 @@
       } else {
         html.classList.remove('dark');
         html.classList.add('light');
+        if (document.body) { document.body.classList.remove('dark'); document.body.classList.add('light'); }
+        if (document.body) { document.body.classList.remove('dark'); document.body.classList.add('light'); }
         if (icon) icon.innerText = '☀️';
         if (authIcon) authIcon.innerText = '☀️';
         if (btn) btn.setAttribute('title', 'Switch to Dark Theme');
@@ -667,15 +671,15 @@
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen antialiased transition-colors duration-200">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen antialiased transition-colors duration-200">
 
   <!-- ================= AUTH VIEW ================= -->
-  <div id="authContainer" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 relative">
+  <div id="authContainer" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-indigo-50/50 to-slate-200 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 relative transition-colors duration-200">
     <!-- Auth Theme Toggle Button -->
     <button onclick="toggleTheme()" id="authThemeToggleBtn" title="Toggle Light/Dark Theme" class="absolute top-5 right-5 p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white transition-all shadow-md">
       <span id="authThemeIcon">🌙</span>
     </button>
-    <div class="w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-3xl p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+    <div class="w-full max-w-md bg-white/95 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden transition-colors duration-200">
       <!-- Glow background -->
       <div class="absolute -top-24 -left-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -687,20 +691,20 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
         </div>
-        <h1 class="text-2xl font-extrabold tracking-tight text-white">TaskMaster Pro</h1>
+        <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">TaskMaster Pro</h1>
         <div class="flex items-center justify-center gap-1.5 mt-1">
           <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
           <span class="text-xs text-amber-300 font-semibold">Firebase Cloud Sync</span>
-          <span class="text-[10px] text-slate-400 font-mono">to-do-list-99a24</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 font-mono">to-do-list-99a24</span>
         </div>
       </div>
 
       <!-- Auth Tabs -->
-      <div class="flex p-1 bg-slate-800/80 rounded-xl mb-6 border border-slate-700/60">
+      <div class="flex p-1 bg-slate-100 dark:bg-slate-800/80 rounded-xl mb-6 border border-slate-200 dark:border-slate-700/60">
         <button id="tabSignIn" onclick="switchAuthTab('signin')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white transition-all shadow-sm">
           Sign In
         </button>
-        <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 py-2 text-xs font-semibold text-slate-400 hover:text-white rounded-lg transition-all">
+        <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg transition-all">
           Create Account
         </button>
       </div>
@@ -708,12 +712,12 @@
       <!-- SIGN IN FORM -->
       <form id="signInForm" onsubmit="handleSignIn(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Email Address</label>
-          <input id="loginEmail" type="email" required placeholder="alex@example.com" value="demo.engineer@taskmaster.dev" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Email Address</label>
+          <input id="loginEmail" type="email" required placeholder="alex@example.com" value="demo.engineer@taskmaster.dev" class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Password</label>
-          <input id="loginPassword" type="password" required placeholder="••••••••" value="Password123!" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Password</label>
+          <input id="loginPassword" type="password" required placeholder="••••••••" value="Password123!" class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
         </div>
         <button type="submit" id="btnSignInSubmit" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-[0.99] text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2">
           <span>Sign In with Email</span>
@@ -724,16 +728,16 @@
       <!-- REGISTER FORM -->
       <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4 hidden">
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Full Name</label>
-          <input id="regName" type="text" required placeholder="Alex Mercer" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Full Name</label>
+          <input id="regName" type="text" required placeholder="Alex Mercer" class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Email Address</label>
-          <input id="regEmail" type="email" required placeholder="alex.mercer@company.com" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Email Address</label>
+          <input id="regEmail" type="email" required placeholder="alex.mercer@company.com" class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Password (Min. 6 chars)</label>
-          <input id="regPassword" type="password" required minlength="6" placeholder="At least 6 characters" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Password (Min. 6 chars)</label>
+          <input id="regPassword" type="password" required minlength="6" placeholder="At least 6 characters" class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
         </div>
         <button type="submit" id="btnRegisterSubmit" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-[0.99] text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2">
           <span>Create with Email</span>
@@ -743,12 +747,12 @@
 
       <!-- OR DIVIDER -->
       <div class="relative my-4">
-        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-800"></div></div>
-        <div class="relative flex justify-center text-[11px]"><span class="bg-slate-900 px-3 text-slate-400 font-semibold uppercase tracking-wider">or sign in with</span></div>
+        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200 dark:border-slate-800"></div></div>
+        <div class="relative flex justify-center text-[11px]"><span class="bg-white dark:bg-slate-900 px-3 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">or sign in with</span></div>
       </div>
 
       <!-- GOOGLE SIGN-IN BUTTON -->
-      <button type="button" onclick="handleGoogleSignIn()" id="btnGoogleSignIn" class="w-full bg-white hover:bg-slate-100 active:scale-[0.99] text-slate-900 font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-3">
+      <button type="button" onclick="handleGoogleSignIn()" id="btnGoogleSignIn" class="w-full bg-white hover:bg-slate-50 dark:hover:bg-slate-100 active:scale-[0.99] border border-slate-300 dark:border-transparent text-slate-900 font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-3">
         <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
           <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -760,7 +764,7 @@
 
       <!-- 1-CLICK INSTANT DEMO BUTTON -->
       <div class="pt-2.5">
-        <button type="button" onclick="quickGuestOrDemoLogin()" class="w-full bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700/80 text-amber-300 font-semibold py-2 rounded-xl text-xs transition-colors flex items-center justify-center gap-1.5">
+        <button type="button" onclick="quickGuestOrDemoLogin()" class="w-full bg-amber-50 hover:bg-amber-100 dark:bg-slate-800/90 dark:hover:bg-slate-700/80 border border-amber-200 dark:border-slate-700/80 text-amber-800 dark:text-amber-300 font-semibold py-2 rounded-xl text-xs transition-colors flex items-center justify-center gap-1.5">
           <span>⚡ 1-Click Instant Demo / Preview Mode</span>
         </button>
       </div>
@@ -775,10 +779,10 @@
 
 
   <!-- ================= MAIN WEB APPLICATION ================= -->
-  <div id="appContainer" class="hidden min-h-screen flex flex-col bg-slate-950">
+  <div id="appContainer" class="hidden min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
 
     <!-- TOP NAVIGATION BAR -->
-    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800/80">
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 transition-colors duration-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         
         <!-- Logo & Title -->
@@ -790,13 +794,13 @@
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h1 class="text-base font-extrabold tracking-tight text-white">TaskMaster Pro</h1>
-              <span id="cloudStatusBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-950/80 border border-amber-600/60 text-amber-300 uppercase tracking-wider flex items-center gap-1">
+              <h1 class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white">TaskMaster Pro</h1>
+              <span id="cloudStatusBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-50 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-600/60 text-amber-800 dark:text-amber-300 uppercase tracking-wider flex items-center gap-1">
                 <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
                 <span>Firebase Cloud</span>
               </span>
             </div>
-            <p class="text-[11px] text-slate-400 hidden sm:block">Real-time Task & Priority Roadmap</p>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Real-time Task & Priority Roadmap</p>
           </div>
         </div>
 
@@ -804,7 +808,7 @@
         <div class="flex-1 max-w-md hidden md:block">
           <div class="relative">
             <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input id="globalSearchInput" oninput="handleSearch(this.value)" type="text" placeholder="Search tasks, descriptions, categories... (Press '/' to focus)" class="w-full bg-slate-800/80 border border-slate-700/70 rounded-xl pl-10 pr-9 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all">
+            <input id="globalSearchInput" oninput="handleSearch(this.value)" type="text" placeholder="Search tasks, descriptions, categories... (Press '/' to focus)" class="w-full bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/70 rounded-xl pl-10 pr-9 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all">
             <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-white text-xs">✕</button>
           </div>
         </div>
@@ -819,25 +823,25 @@
           </button>
 
           <!-- Theme Toggle Button -->
-          <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Light/Dark Theme" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition-colors">
+          <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Light/Dark Theme" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
             <span id="themeIcon">🌙</span>
           </button>
 
           <!-- Export JSON Button -->
-          <button onclick="exportTasksJSON()" title="Export all tasks to JSON" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition-colors">
+          <button onclick="exportTasksJSON()" title="Export all tasks to JSON" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
           </button>
 
           <!-- User Profile & Logout -->
-          <div class="flex items-center gap-2 pl-2 border-l border-slate-800">
+          <div class="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800">
             <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center uppercase shadow-sm" id="userAvatar">
               U
             </div>
             <div class="hidden lg:block text-left">
-              <div id="navUserName" class="text-xs font-bold text-white leading-tight">Alex Principal</div>
-              <div id="navUserEmail" class="text-[10px] text-slate-400 truncate max-w-[120px]">user@example.com</div>
+              <div id="navUserName" class="text-xs font-bold text-slate-900 dark:text-white leading-tight">Alex Principal</div>
+              <div id="navUserEmail" class="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[120px]">user@example.com</div>
             </div>
-            <button onclick="logout()" title="Sign Out" class="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-950/30 transition-colors ml-1">
+            <button onclick="logout()" title="Sign Out" class="p-2 rounded-xl text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors ml-1">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
             </button>
           </div>
@@ -850,7 +854,7 @@
       <div class="px-4 pb-3 md:hidden">
         <div class="relative">
           <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input oninput="handleSearch(this.value)" type="text" placeholder="Search tasks..." class="w-full bg-slate-800/80 border border-slate-700/70 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500">
+          <input oninput="handleSearch(this.value)" type="text" placeholder="Search tasks..." class="w-full bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/70 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500">
         </div>
       </div>
     </header>
@@ -862,37 +866,37 @@
       <!-- HERO STATS / PRODUCTIVITY METRICS -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         <!-- Total Tasks -->
-        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-          <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
+        <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden transition-colors duration-200">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
             <span>Total Tasks</span>
-            <span class="p-1.5 rounded-lg bg-indigo-950/60 text-indigo-400 border border-indigo-800/40">📋</span>
+            <span class="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/40">📋</span>
           </div>
           <div class="flex items-baseline gap-2">
-            <span id="statTotal" class="text-2xl sm:text-3xl font-extrabold text-white">0</span>
+            <span id="statTotal" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">0</span>
             <span class="text-xs text-slate-400">managed</span>
           </div>
         </div>
 
         <!-- Completion Progress -->
-        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-          <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
+        <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden transition-colors duration-200">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
             <span>Completed</span>
-            <span class="p-1.5 rounded-lg bg-emerald-950/60 text-emerald-400 border border-emerald-800/40">✓</span>
+            <span class="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40">✓</span>
           </div>
           <div class="flex items-baseline gap-2">
             <span id="statCompletedRate" class="text-2xl sm:text-3xl font-extrabold text-emerald-400">0%</span>
             <span id="statCompletedCount" class="text-xs text-slate-400">(0 done)</span>
           </div>
-          <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2.5 overflow-hidden">
+          <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2.5 overflow-hidden">
             <div id="statProgressBar" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
           </div>
         </div>
 
         <!-- Urgent & High Priority -->
-        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-          <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
+        <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden transition-colors duration-200">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
             <span>Urgent / High</span>
-            <span class="p-1.5 rounded-lg bg-red-950/60 text-red-400 border border-red-800/40">🔥</span>
+            <span class="p-1.5 rounded-lg bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/40">🔥</span>
           </div>
           <div class="flex items-baseline gap-2">
             <span id="statUrgent" class="text-2xl sm:text-3xl font-extrabold text-red-400">0</span>
@@ -901,10 +905,10 @@
         </div>
 
         <!-- Overdue Warning -->
-        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-          <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
+        <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden transition-colors duration-200">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
             <span>Overdue Tasks</span>
-            <span class="p-1.5 rounded-lg bg-amber-950/60 text-amber-400 border border-amber-800/40">🚨</span>
+            <span class="p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40">🚨</span>
           </div>
           <div class="flex items-baseline gap-2">
             <span id="statOverdue" class="text-2xl sm:text-3xl font-extrabold text-amber-400">0</span>
@@ -915,18 +919,18 @@
 
 
       <!-- CONTROLS & FILTER TOOLBAR -->
-      <div class="bg-slate-900/70 border border-slate-800/90 rounded-2xl p-4 space-y-4">
+      <div class="bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/90 rounded-2xl p-4 space-y-4 shadow-sm transition-colors duration-200">
         
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           <!-- Status Filter Tabs -->
-          <div class="flex p-1 bg-slate-800/90 rounded-xl border border-slate-700/60 text-xs font-semibold w-full sm:w-auto">
+          <div class="flex p-1 bg-slate-100 dark:bg-slate-800/90 rounded-xl border border-slate-200 dark:border-slate-700/60 text-xs font-semibold w-full sm:w-auto">
             <button onclick="setStatusFilter('all')" id="btnFilterAll" class="flex-1 sm:flex-none px-4 py-1.5 rounded-lg bg-indigo-600 text-white transition-all shadow-sm">
               All Tasks (<span id="cntAll">0</span>)
             </button>
-            <button onclick="setStatusFilter('pending')" id="btnFilterPending" class="flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">
+            <button onclick="setStatusFilter('pending')" id="btnFilterPending" class="flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
               Active (<span id="cntPending">0</span>)
             </button>
-            <button onclick="setStatusFilter('completed')" id="btnFilterCompleted" class="flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">
+            <button onclick="setStatusFilter('completed')" id="btnFilterCompleted" class="flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
               Completed (<span id="cntCompleted">0</span>)
             </button>
           </div>
@@ -936,7 +940,7 @@
             <!-- Priority Filter Dropdown -->
             <div class="flex items-center gap-1 text-xs">
               <span class="text-slate-400 font-medium">Priority:</span>
-              <select id="priorityFilterSelect" onchange="setPriorityFilter(this.value)" class="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-indigo-500">
+              <select id="priorityFilterSelect" onchange="setPriorityFilter(this.value)" class="bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-indigo-500">
                 <option value="all">All Priorities</option>
                 <option value="urgent">🔴 Urgent</option>
                 <option value="high">🟠 High</option>
@@ -948,7 +952,7 @@
             <!-- Sort Algorithm Dropdown -->
             <div class="flex items-center gap-1 text-xs">
               <span class="text-slate-400 font-medium">Sort By:</span>
-              <select id="sortSelect" onchange="setSortMode(this.value)" class="bg-slate-800 border border-slate-700 text-indigo-300 font-semibold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-indigo-500">
+              <select id="sortSelect" onchange="setSortMode(this.value)" class="bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-indigo-600 dark:text-indigo-300 font-semibold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-indigo-500">
                 <option value="composite">⚡ Smart Composite Score</option>
                 <option value="deadline">⏳ Deadline (Soonest)</option>
                 <option value="priority">🔥 Priority (Urgent First)</option>
@@ -959,11 +963,11 @@
             </div>
 
             <!-- View Mode Switch (Grid vs List) -->
-            <div class="flex p-0.5 bg-slate-800 rounded-xl border border-slate-700 text-xs">
+            <div class="flex p-0.5 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
               <button onclick="setViewMode('grid')" id="btnViewGrid" title="Grid View" class="p-1.5 rounded-lg bg-indigo-600 text-white transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
               </button>
-              <button onclick="setViewMode('list')" id="btnViewList" title="List View" class="p-1.5 rounded-lg text-slate-400 hover:text-white transition-colors">
+              <button onclick="setViewMode('list')" id="btnViewList" title="List View" class="p-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
               </button>
             </div>
@@ -984,10 +988,10 @@
           <!-- Dynamic Task Cards -->
         </div>
 
-        <div id="tasksListTable" class="hidden bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+        <div id="tasksListTable" class="hidden bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm transition-colors duration-200">
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-800/80 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800 font-semibold">
+            <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+              <thead class="bg-slate-50 dark:bg-slate-800/80 text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 font-semibold">
                 <tr>
                   <th class="p-3.5 w-10 text-center">Status</th>
                   <th class="p-3.5">Task Title</th>
@@ -998,7 +1002,7 @@
                   <th class="p-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody id="tasksTableBody" class="divide-y divide-slate-800/60 font-medium">
+              <tbody id="tasksTableBody" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
                 <!-- Dynamic Rows -->
               </tbody>
             </table>
@@ -1006,12 +1010,12 @@
         </div>
 
         <!-- Empty State Illustration -->
-        <div id="emptyState" class="hidden text-center py-16 px-4 bg-slate-900/40 border border-dashed border-slate-800 rounded-3xl">
-          <div class="w-16 h-16 bg-indigo-950/60 border border-indigo-800/40 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
+        <div id="emptyState" class="hidden text-center py-16 px-4 bg-white/60 dark:bg-slate-900/40 border border-dashed border-slate-300 dark:border-slate-800 rounded-3xl transition-colors duration-200">
+          <div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/40 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
             ✨
           </div>
-          <h3 class="text-base font-bold text-white mb-1">No tasks matching your filters</h3>
-          <p class="text-xs text-slate-400 max-w-sm mx-auto mb-5">Create a task to build your productivity roadmap or adjust active filters.</p>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">No tasks matching your filters</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-5">Create a task to build your productivity roadmap or adjust active filters.</p>
           <button onclick="openCreateTaskModal()" class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition-colors shadow-lg shadow-indigo-600/30">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             <span>Create New Task</span>
@@ -1026,15 +1030,15 @@
 
   <!-- ================= CREATE & EDIT TASK MODAL ================= -->
   <div id="taskModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-    <div class="w-full max-w-xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl p-6 sm:p-7 relative animate-fade-in my-8 max-h-[90vh] overflow-y-auto scrollbar-hide">
+    <div class="w-full max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-3xl shadow-2xl p-6 sm:p-7 relative animate-fade-in my-8 max-h-[90vh] overflow-y-auto scrollbar-hide transition-colors duration-200">
       
       <!-- Modal Header -->
-      <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-5">
         <div>
-          <h3 id="modalTitle" class="text-lg font-bold text-white">Create New Task</h3>
-          <p id="modalSubtitle" class="text-xs text-slate-400">Specify task parameters and deadline constraints</p>
+          <h3 id="modalTitle" class="text-lg font-bold text-slate-900 dark:text-white">Create New Task</h3>
+          <p id="modalSubtitle" class="text-xs text-slate-500 dark:text-slate-400">Specify task parameters and deadline constraints</p>
         </div>
-        <button onclick="closeTaskModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+        <button onclick="closeTaskModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors">
           ✕
         </button>
       </div>
@@ -1045,30 +1049,30 @@
 
         <!-- Title -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Task Title *</label>
-          <input id="formTitle" type="text" required placeholder="e.g. Build Android APK for client release" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Task Title *</label>
+          <input id="formTitle" type="text" required placeholder="e.g. Build Android APK for client release" class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
         </div>
 
         <!-- Description -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Description</label>
-          <textarea id="formDescription" rows="3" placeholder="Add technical requirements, sprint notes or acceptance criteria..." class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"></textarea>
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Description</label>
+          <textarea id="formDescription" rows="3" placeholder="Add technical requirements, sprint notes or acceptance criteria..." class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"></textarea>
         </div>
 
         <!-- Priority Selector -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Priority Level</label>
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Priority Level</label>
           <div class="grid grid-cols-4 gap-2" id="formPriorityGroup">
-            <button type="button" onclick="selectModalPriority('urgent')" id="pOpt-urgent" class="py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all border-red-500/40 bg-red-950/30 text-red-400 hover:bg-red-950/60">
+            <button type="button" onclick="selectModalPriority('urgent')" id="pOpt-urgent" class="py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all border-red-300 dark:border-red-500/40 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/60">
               🔴 Urgent
             </button>
-            <button type="button" onclick="selectModalPriority('high')" id="pOpt-high" class="py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all border-amber-500/40 bg-amber-950/30 text-amber-400 hover:bg-amber-950/60">
+            <button type="button" onclick="selectModalPriority('high')" id="pOpt-high" class="py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/60">
               🟠 High
             </button>
-            <button type="button" onclick="selectModalPriority('medium')" id="pOpt-medium" class="py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all border-indigo-500/60 bg-indigo-900/60 text-indigo-300 ring-2 ring-indigo-500">
+            <button type="button" onclick="selectModalPriority('medium')" id="pOpt-medium" class="py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all border-indigo-300 dark:border-indigo-500/60 bg-indigo-50 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 ring-2 ring-indigo-500">
               🔵 Medium
             </button>
-            <button type="button" onclick="selectModalPriority('low')" id="pOpt-low" class="py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all border-emerald-500/40 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-950/60">
+            <button type="button" onclick="selectModalPriority('low')" id="pOpt-low" class="py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all border-emerald-300 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-950/60">
               🟢 Low
             </button>
           </div>
@@ -1078,15 +1082,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Due Date & Time *</label>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Due Date & Time *</label>
             </div>
-            <input id="formDueDate" type="datetime-local" required class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <input id="formDueDate" type="datetime-local" required class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500">
           </div>
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Hard Cutoff Deadline *</label>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Hard Cutoff Deadline *</label>
             </div>
-            <input id="formDeadline" type="datetime-local" required class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <input id="formDeadline" type="datetime-local" required class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500">
           </div>
         </div>
 
@@ -1101,8 +1105,8 @@
 
         <!-- Category Tags -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Category Tags (comma separated)</label>
-          <input id="formCategory" type="text" placeholder="Engineering, Mobile, Work" value="Engineering" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Category Tags (comma separated)</label>
+          <input id="formCategory" type="text" placeholder="Engineering, Mobile, Work" value="Engineering" class="w-full bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
           <div class="flex items-center gap-1.5 mt-2 flex-wrap">
             <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Suggested:</span>
             <button type="button" onclick="addSuggestedTag('Engineering')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">+ Engineering</button>
@@ -1114,8 +1118,8 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-800">
-          <button type="button" onclick="closeTaskModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-colors">
+        <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-200 dark:border-slate-800">
+          <button type="button" onclick="closeTaskModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-colors">
             Cancel
           </button>
           <button type="submit" id="btnModalSubmit" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-1.5">
@@ -1131,31 +1135,31 @@
 
   <!-- ================= TASK DETAIL MODAL ================= -->
   <div id="detailModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="w-full max-w-lg bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl p-6 sm:p-7 relative animate-fade-in max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+    <div class="w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-2xl p-6 sm:p-7 relative animate-fade-in max-h-[90vh] overflow-y-auto transition-colors duration-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
         <div class="flex items-center gap-2" id="detailPriorityBadge">
           <!-- Priority Chip -->
         </div>
-        <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+        <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors">
           ✕
         </button>
       </div>
 
       <div class="space-y-4">
         <div>
-          <h2 id="detailTitle" class="text-xl font-bold text-white leading-snug">Task Title</h2>
-          <p id="detailDesc" class="text-xs text-slate-300 mt-2 leading-relaxed whitespace-pre-wrap">Task description goes here.</p>
+          <h2 id="detailTitle" class="text-xl font-bold text-slate-900 dark:text-white leading-snug">Task Title</h2>
+          <p id="detailDesc" class="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed whitespace-pre-wrap">Task description goes here.</p>
         </div>
 
         <!-- Metadata Grid -->
-        <div class="grid grid-cols-2 gap-3 bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-xs">
+        <div class="grid grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 rounded-2xl p-4 text-xs">
           <div>
             <span class="text-slate-400 uppercase tracking-wider text-[10px] font-semibold block mb-0.5">Due Date</span>
-            <span id="detailDueDate" class="text-slate-200 font-medium">-</span>
+            <span id="detailDueDate" class="text-slate-900 dark:text-slate-200 font-medium">-</span>
           </div>
           <div>
             <span class="text-slate-400 uppercase tracking-wider text-[10px] font-semibold block mb-0.5">Hard Deadline</span>
-            <span id="detailDeadline" class="text-slate-200 font-medium">-</span>
+            <span id="detailDeadline" class="text-slate-900 dark:text-slate-200 font-medium">-</span>
           </div>
           <div>
             <span class="text-slate-400 uppercase tracking-wider text-[10px] font-semibold block mb-0.5">Composite Score</span>
@@ -1175,8 +1179,8 @@
         </div>
 
         <!-- Action Row -->
-        <div class="pt-4 flex items-center justify-between border-t border-slate-800">
-          <button id="btnDetailDelete" class="px-3.5 py-2 rounded-xl bg-red-950/40 hover:bg-red-950/80 border border-red-800/50 text-red-400 text-xs font-semibold transition-colors flex items-center gap-1.5">
+        <div class="pt-4 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+          <button id="btnDetailDelete" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-950/80 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-400 text-xs font-semibold transition-colors flex items-center gap-1.5">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             <span>Delete</span>
           </button>
@@ -1373,9 +1377,8 @@
     // -------------------------------------------------------------
     // INITIALIZATION & AUTH LISTENER
     // -------------------------------------------------------------
-    window.addEventListener('DOMContentLoaded', () => {
+    function initApp() {
       window.applyTheme(window.currentTheme || 'dark');
-      applySchedulePreset(4, 8);
 
       // Keyboard shortcuts
       window.addEventListener('keydown', (e) => {
@@ -1428,7 +1431,13 @@
           showAuth();
         }
       }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
 
     // -------------------------------------------------------------
     // AUTH HANDLERS
@@ -1935,7 +1944,7 @@
         if (id === f) {
           btn.className = 'flex-1 sm:flex-none px-4 py-1.5 rounded-lg bg-indigo-600 text-white transition-all shadow-sm';
         } else {
-          btn.className = 'flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all';
+          btn.className = 'flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all';
         }
       });
       renderAll();
@@ -1984,12 +1993,12 @@
 
       if (mode === 'grid') {
         btnGrid.className = 'p-1.5 rounded-lg bg-indigo-600 text-white transition-colors';
-        btnList.className = 'p-1.5 rounded-lg text-slate-400 hover:text-white transition-colors';
+        btnList.className = 'p-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors';
         gridView.classList.remove('hidden');
         listView.classList.add('hidden');
       } else {
         btnList.className = 'p-1.5 rounded-lg bg-indigo-600 text-white transition-colors';
-        btnGrid.className = 'p-1.5 rounded-lg text-slate-400 hover:text-white transition-colors';
+        btnGrid.className = 'p-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors';
         listView.classList.remove('hidden');
         gridView.classList.add('hidden');
       }
@@ -2009,7 +2018,7 @@
 
       const catContainer = document.getElementById('categoryChipsContainer');
       catContainer.innerHTML = Object.keys(catCountMap).map(c => `
-        <button onclick="setCategoryFilter('${c}')" class="px-3 py-1 rounded-full whitespace-nowrap text-xs font-semibold transition-all ${currentCategory === c ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-800 text-slate-400 border border-slate-700 hover:text-white'}">
+        <button onclick="setCategoryFilter('${c}')" class="px-3 py-1 rounded-full whitespace-nowrap text-xs font-semibold transition-all ${currentCategory === c ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:text-slate-900 dark:hover:text-white'}">
           ${c} <span class="opacity-70 text-[10px] ml-1">(${catCountMap[c]})</span>
         </button>
       `).join('');
@@ -2118,7 +2127,7 @@
         }
 
         return `
-          <div class="bg-slate-900/90 border border-slate-800 border-l-4 ${pc.border} rounded-2xl p-4 shadow-sm hover:border-slate-700 hover:shadow-md transition-all flex flex-col justify-between group ${t.isCompleted ? 'opacity-65' : ''}">
+          <div class="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 border-l-4 ${pc.border} rounded-2xl p-4 shadow-sm hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md transition-all flex flex-col justify-between group ${t.isCompleted ? 'opacity-65' : ''}">
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
                 <div class="flex items-center gap-1.5 flex-wrap">
@@ -2130,22 +2139,22 @@
                   </span>
                 </div>
                 ${!t.isCompleted ? `
-                  <span class="text-[10px] font-bold text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded-md border border-indigo-800/40" title="Smart Algorithm Composite Score">
+                  <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-md border border-indigo-200 dark:border-indigo-800/40" title="Smart Algorithm Composite Score">
                     ⚡ ${score} pts
                   </span>
                 ` : ''}
               </div>
 
               <div class="flex items-start gap-3 mb-2">
-                <button onclick="toggleTask('${t._id}')" class="mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center text-xs flex-shrink-0 transition-colors ${t.isCompleted ? 'bg-emerald-500 border-emerald-500 text-white font-bold' : 'border-slate-600 hover:border-indigo-400 text-transparent hover:text-slate-400'}">
+                <button onclick="toggleTask('${t._id}')" class="mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center text-xs flex-shrink-0 transition-colors ${t.isCompleted ? 'bg-emerald-500 border-emerald-500 text-white font-bold' : 'border-slate-300 dark:border-slate-600 hover:border-indigo-500 bg-white dark:bg-transparent text-transparent hover:text-slate-400'}">
                   ✓
                 </button>
                 <div class="flex-1 cursor-pointer" onclick="openDetailModal('${t._id}')">
-                  <h4 class="text-sm font-bold leading-snug transition-colors group-hover:text-indigo-300 ${t.isCompleted ? 'line-through text-slate-400' : 'text-white'}">
+                  <h4 class="text-sm font-bold leading-snug transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-300 ${t.isCompleted ? 'line-through text-slate-400' : 'text-slate-900 dark:text-white'}">
                     ${escapeHtml(t.title)}
                   </h4>
                   ${t.description ? `
-                    <p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                       ${escapeHtml(t.description)}
                     </p>
                   ` : ''}
@@ -2153,20 +2162,20 @@
               </div>
             </div>
 
-            <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2 mt-3 text-xs">
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2 mt-3 text-xs">
               <div class="flex items-center gap-1 flex-wrap overflow-hidden">
                 ${(t.category || []).map(c => `
-                  <span onclick="setCategoryFilter('${c}')" class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 hover:text-white cursor-pointer transition-colors">
+                  <span onclick="setCategoryFilter('${c}')" class="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors">
                     #${escapeHtml(c)}
                   </span>
                 `).join('')}
               </div>
 
               <div class="flex items-center gap-1">
-                <button onclick="openEditTaskModal('${t._id}')" title="Edit Task" class="p-1 rounded-lg text-slate-400 hover:text-indigo-300 hover:bg-slate-800 transition-colors">
+                <button onclick="openEditTaskModal('${t._id}')" title="Edit Task" class="p-1 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </button>
-                <button onclick="deleteTask('${t._id}')" title="Delete Task" class="p-1 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-colors">
+                <button onclick="deleteTask('${t._id}')" title="Delete Task" class="p-1 rounded-lg text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 </button>
               </div>
@@ -2182,36 +2191,36 @@
         const deadlineDate = new Date(t.deadline).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
         return `
-          <tr class="hover:bg-slate-800/50 transition-colors ${t.isCompleted ? 'opacity-65' : ''}">
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${t.isCompleted ? 'opacity-65' : ''}">
             <td class="p-3.5 text-center">
               <button onclick="toggleTask('${t._id}')" class="w-5 h-5 rounded-md border flex items-center justify-center text-xs transition-colors mx-auto ${t.isCompleted ? 'bg-emerald-500 border-emerald-500 text-white font-bold' : 'border-slate-600 hover:border-indigo-400 text-transparent'}">
                 ✓
               </button>
             </td>
             <td class="p-3.5 cursor-pointer" onclick="openDetailModal('${t._id}')">
-              <div class="font-bold text-white hover:text-indigo-300 transition-colors ${t.isCompleted ? 'line-through text-slate-400' : ''}">
+              <div class="font-bold text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors ${t.isCompleted ? 'line-through text-slate-400' : ''}">
                 ${escapeHtml(t.title)}
               </div>
-              ${t.description ? `<div class="text-[11px] text-slate-400 truncate max-w-xs">${escapeHtml(t.description)}</div>` : ''}
+              ${t.description ? `<div class="text-[11px] text-slate-500 dark:text-slate-400 truncate max-w-xs">${escapeHtml(t.description)}</div>` : ''}
             </td>
             <td class="p-3.5">
               <span class="px-2 py-0.5 rounded-full border text-[10px] font-extrabold uppercase ${pc.badge}">
                 ${t.priority}
               </span>
             </td>
-            <td class="p-3.5 text-slate-300 font-mono text-[11px]">
+            <td class="p-3.5 text-slate-600 dark:text-slate-300 font-mono text-[11px]">
               ${deadlineDate}
             </td>
             <td class="p-3.5">
               <div class="flex gap-1 flex-wrap">
-                ${(t.category || []).map(c => `<span class="text-[10px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">#${escapeHtml(c)}</span>`).join('')}
+                ${(t.category || []).map(c => `<span class="text-[10px] text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">#${escapeHtml(c)}</span>`).join('')}
               </div>
             </td>
             <td class="p-3.5 font-bold text-indigo-400">
               ${!t.isCompleted ? `⚡ ${score}` : '-'}
             </td>
             <td class="p-3.5 text-right whitespace-nowrap">
-              <button onclick="openEditTaskModal('${t._id}')" class="p-1 rounded text-slate-400 hover:text-white mr-1">✏️</button>
+              <button onclick="openEditTaskModal('${t._id}')" class="p-1 rounded text-slate-400 hover:text-indigo-600 dark:hover:text-white mr-1">✏️</button>
               <button onclick="deleteTask('${t._id}')" class="p-1 rounded text-slate-400 hover:text-red-400">🗑️</button>
             </td>
           </tr>
