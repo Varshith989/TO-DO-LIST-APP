@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>TaskMaster Pro - Firebase Cloud Web App</title>
   <!-- Immediate Theme Initialization (Prevents FOUC) -->
   <script>
@@ -88,6 +88,14 @@
   </script>
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* Prevent text size adjustment on orientation changes */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    /* Ensure all boxes and inputs respect box-sizing */
+    *, ::before, ::after { box-sizing: border-box; }
+    /* Touch target helpers */
+    .touch-target { min-width: 36px; min-height: 36px; }
+  
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     @keyframes fadeIn {
@@ -782,29 +790,30 @@
   <div id="appContainer" class="hidden min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
 
     <!-- TOP NAVIGATION BAR -->
-    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 transition-colors duration-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 transition-colors duration-200">
+      <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-1.5 sm:gap-4">
         
         <!-- Logo & Title -->
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 bg-gradient-to-tr from-amber-500 via-orange-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-md shadow-orange-500/20">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
+          <div class="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-tr from-amber-500 via-orange-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-md shadow-orange-500/20 flex-shrink-0">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h1 class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white">TaskMaster Pro</h1>
-              <span id="cloudStatusBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-50 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-600/60 text-amber-800 dark:text-amber-300 uppercase tracking-wider flex items-center gap-1">
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 dark:text-white truncate">TaskMaster</h1>
+              <span id="cloudStatusBadge" class="hidden xs:inline-flex px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-bold rounded-full bg-amber-50 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-600/60 text-amber-800 dark:text-amber-300 uppercase tracking-wider items-center gap-1 flex-shrink-0">
                 <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                <span>Firebase Cloud</span>
+                <span class="hidden sm:inline">Firebase Cloud</span>
+                <span class="sm:hidden">Cloud</span>
               </span>
             </div>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Real-time Task & Priority Roadmap</p>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block truncate">Real-time Task Roadmap</p>
           </div>
         </div>
 
-        <!-- Center Search Bar (Responsive) -->
+        <!-- Center Search Bar (Responsive - Desktop) -->
         <div class="flex-1 max-w-md hidden md:block">
           <div class="relative">
             <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -814,34 +823,34 @@
         </div>
 
         <!-- Right Action Controls -->
-        <div class="flex items-center gap-2 sm:gap-3">
+        <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
           <!-- Create Task Primary Button -->
-          <button onclick="openCreateTaskModal()" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold px-3.5 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-md shadow-indigo-600/30 flex items-center gap-1.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
+          <button onclick="openCreateTaskModal()" title="Create New Task (N)" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm transition-all shadow-md shadow-indigo-600/30 flex items-center justify-center gap-1 sm:gap-1.5 min-h-[36px] sm:min-h-[40px]">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
             <span class="hidden sm:inline">New Task</span>
             <span class="text-[10px] opacity-75 font-mono hidden md:inline ml-1 bg-indigo-700/60 px-1.5 py-0.5 rounded">N</span>
           </button>
 
           <!-- Theme Toggle Button -->
-          <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Light/Dark Theme" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-            <span id="themeIcon">🌙</span>
+          <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Light/Dark Theme" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center flex-shrink-0">
+            <span id="themeIcon" class="text-sm">🌙</span>
           </button>
 
           <!-- Export JSON Button -->
-          <button onclick="exportTasksJSON()" title="Export all tasks to JSON" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+          <button onclick="exportTasksJSON()" title="Export all tasks to JSON" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center flex-shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
           </button>
 
           <!-- User Profile & Logout -->
-          <div class="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center uppercase shadow-sm" id="userAvatar">
+          <div class="flex items-center gap-1 sm:gap-2 pl-1 sm:pl-2 border-l border-slate-200 dark:border-slate-800 flex-shrink-0">
+            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-amber-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center uppercase shadow-sm flex-shrink-0" id="userAvatar">
               U
             </div>
             <div class="hidden lg:block text-left">
-              <div id="navUserName" class="text-xs font-bold text-slate-900 dark:text-white leading-tight">Alex Principal</div>
+              <div id="navUserName" class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate max-w-[120px]">Alex Principal</div>
               <div id="navUserEmail" class="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[120px]">user@example.com</div>
             </div>
-            <button onclick="logout()" title="Sign Out" class="p-2 rounded-xl text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors ml-1">
+            <button onclick="logout()" title="Sign Out" class="p-1.5 sm:p-2 rounded-xl text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center flex-shrink-0">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
             </button>
           </div>
@@ -851,7 +860,7 @@
       </div>
 
       <!-- Mobile Search Row -->
-      <div class="px-4 pb-3 md:hidden">
+      <div class="px-2.5 sm:px-4 pb-2.5 md:hidden">
         <div class="relative">
           <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
           <input oninput="handleSearch(this.value)" type="text" placeholder="Search tasks..." class="w-full bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/70 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500">
@@ -861,86 +870,86 @@
 
 
     <!-- MAIN CONTENT BODY -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-2.5 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6 min-w-0">
 
       <!-- HERO STATS / PRODUCTIVITY METRICS -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 min-w-0">
         <!-- Total Tasks -->
-        <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden transition-colors duration-200">
-          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
-            <span>Total Tasks</span>
-            <span class="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/40">📋</span>
+        <div class="min-w-0 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-sm relative overflow-hidden transition-colors duration-200 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1 min-w-0 gap-1">
+            <span class="truncate">Total Tasks</span>
+            <span class="p-1 sm:p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/40 flex-shrink-0 text-xs sm:text-sm">📋</span>
           </div>
-          <div class="flex items-baseline gap-2">
-            <span id="statTotal" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">0</span>
-            <span class="text-xs text-slate-400">managed</span>
+          <div class="flex items-baseline gap-1.5 sm:gap-2 min-w-0">
+            <span id="statTotal" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-white">0</span>
+            <span class="text-[10px] sm:text-xs text-slate-400 truncate">managed</span>
           </div>
         </div>
 
         <!-- Completion Progress -->
-        <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden transition-colors duration-200">
-          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
-            <span>Completed</span>
-            <span class="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40">✓</span>
+        <div class="min-w-0 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-sm relative overflow-hidden transition-colors duration-200 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1 min-w-0 gap-1">
+            <span class="truncate">Completed</span>
+            <span class="p-1 sm:p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 flex-shrink-0 text-xs sm:text-sm">✓</span>
           </div>
-          <div class="flex items-baseline gap-2">
-            <span id="statCompletedRate" class="text-2xl sm:text-3xl font-extrabold text-emerald-400">0%</span>
-            <span id="statCompletedCount" class="text-xs text-slate-400">(0 done)</span>
+          <div class="flex items-baseline gap-1.5 sm:gap-2 min-w-0">
+            <span id="statCompletedRate" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-emerald-500 dark:text-emerald-400">0%</span>
+            <span id="statCompletedCount" class="text-[10px] sm:text-xs text-slate-400 truncate">(0 done)</span>
           </div>
-          <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2.5 overflow-hidden">
+          <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
             <div id="statProgressBar" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
           </div>
         </div>
 
         <!-- Urgent & High Priority -->
-        <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden transition-colors duration-200">
-          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
-            <span>Urgent / High</span>
-            <span class="p-1.5 rounded-lg bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/40">🔥</span>
+        <div class="min-w-0 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-sm relative overflow-hidden transition-colors duration-200 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1 min-w-0 gap-1">
+            <span class="truncate">Urgent / High</span>
+            <span class="p-1 sm:p-1.5 rounded-lg bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/40 flex-shrink-0 text-xs sm:text-sm">🔥</span>
           </div>
-          <div class="flex items-baseline gap-2">
-            <span id="statUrgent" class="text-2xl sm:text-3xl font-extrabold text-red-400">0</span>
-            <span class="text-xs text-slate-400">high priority</span>
+          <div class="flex items-baseline gap-1.5 sm:gap-2 min-w-0">
+            <span id="statUrgent" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-red-500 dark:text-red-400">0</span>
+            <span class="text-[10px] sm:text-xs text-slate-400 truncate">high priority</span>
           </div>
         </div>
 
         <!-- Overdue Warning -->
-        <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden transition-colors duration-200">
-          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
-            <span>Overdue Tasks</span>
-            <span class="p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40">🚨</span>
+        <div class="min-w-0 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-sm relative overflow-hidden transition-colors duration-200 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1 min-w-0 gap-1">
+            <span class="truncate">Overdue Tasks</span>
+            <span class="p-1 sm:p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40 flex-shrink-0 text-xs sm:text-sm">🚨</span>
           </div>
-          <div class="flex items-baseline gap-2">
-            <span id="statOverdue" class="text-2xl sm:text-3xl font-extrabold text-amber-400">0</span>
-            <span class="text-xs text-slate-400">need action</span>
+          <div class="flex items-baseline gap-1.5 sm:gap-2 min-w-0">
+            <span id="statOverdue" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-amber-500 dark:text-amber-400">0</span>
+            <span class="text-[10px] sm:text-xs text-slate-400 truncate">need action</span>
           </div>
         </div>
       </div>
 
 
       <!-- CONTROLS & FILTER TOOLBAR -->
-      <div class="bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/90 rounded-2xl p-4 space-y-4 shadow-sm transition-colors duration-200">
+      <div class="bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/90 rounded-2xl p-3 sm:p-4 space-y-3 sm:space-y-4 shadow-sm transition-colors duration-200 min-w-0 max-w-full">
         
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 sm:gap-3 min-w-0">
           <!-- Status Filter Tabs -->
-          <div class="flex p-1 bg-slate-100 dark:bg-slate-800/90 rounded-xl border border-slate-200 dark:border-slate-700/60 text-xs font-semibold w-full sm:w-auto">
-            <button onclick="setStatusFilter('all')" id="btnFilterAll" class="flex-1 sm:flex-none px-4 py-1.5 rounded-lg bg-indigo-600 text-white transition-all shadow-sm">
+          <div class="flex p-1 bg-slate-100 dark:bg-slate-800/90 rounded-xl border border-slate-200 dark:border-slate-700/60 text-xs font-semibold w-full sm:w-auto min-w-0">
+            <button onclick="setStatusFilter('all')" id="btnFilterAll" class="flex-1 sm:flex-none px-2 sm:px-4 py-1.5 rounded-lg bg-indigo-600 text-white transition-all shadow-sm text-[11px] sm:text-xs truncate">
               All Tasks (<span id="cntAll">0</span>)
             </button>
-            <button onclick="setStatusFilter('pending')" id="btnFilterPending" class="flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <button onclick="setStatusFilter('pending')" id="btnFilterPending" class="flex-1 sm:flex-none px-2 sm:px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all text-[11px] sm:text-xs truncate">
               Active (<span id="cntPending">0</span>)
             </button>
-            <button onclick="setStatusFilter('completed')" id="btnFilterCompleted" class="flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <button onclick="setStatusFilter('completed')" id="btnFilterCompleted" class="flex-1 sm:flex-none px-2 sm:px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all text-[11px] sm:text-xs truncate">
               Completed (<span id="cntCompleted">0</span>)
             </button>
           </div>
 
-          <!-- Priority Filter & Sort Selector -->
-          <div class="flex flex-wrap items-center gap-2.5">
+          <!-- Priority Filter & Sort Selector & View Toggle -->
+          <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 w-full sm:w-auto min-w-0">
             <!-- Priority Filter Dropdown -->
-            <div class="flex items-center gap-1 text-xs">
-              <span class="text-slate-400 font-medium">Priority:</span>
-              <select id="priorityFilterSelect" onchange="setPriorityFilter(this.value)" class="bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-indigo-500">
+            <div class="flex items-center gap-1 text-xs flex-1 sm:flex-none min-w-[110px]">
+              <span class="text-slate-500 dark:text-slate-400 font-medium text-[11px] sm:text-xs whitespace-nowrap">Priority:</span>
+              <select id="priorityFilterSelect" onchange="setPriorityFilter(this.value)" class="w-full sm:w-auto bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-2 py-1.5 focus:outline-none focus:border-indigo-500 min-w-0">
                 <option value="all">All Priorities</option>
                 <option value="urgent">🔴 Urgent</option>
                 <option value="high">🟠 High</option>
@@ -950,12 +959,12 @@
             </div>
 
             <!-- Sort Algorithm Dropdown -->
-            <div class="flex items-center gap-1 text-xs">
-              <span class="text-slate-400 font-medium">Sort By:</span>
-              <select id="sortSelect" onchange="setSortMode(this.value)" class="bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-indigo-600 dark:text-indigo-300 font-semibold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-indigo-500">
-                <option value="composite">⚡ Smart Composite Score</option>
+            <div class="flex items-center gap-1 text-xs flex-1 sm:flex-none min-w-[130px]">
+              <span class="text-slate-500 dark:text-slate-400 font-medium text-[11px] sm:text-xs whitespace-nowrap">Sort:</span>
+              <select id="sortSelect" onchange="setSortMode(this.value)" class="w-full sm:w-auto bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-indigo-600 dark:text-indigo-300 font-semibold text-xs rounded-xl px-2 py-1.5 focus:outline-none focus:border-indigo-500 min-w-0">
+                <option value="composite">⚡ Smart Composite</option>
                 <option value="deadline">⏳ Deadline (Soonest)</option>
-                <option value="priority">🔥 Priority (Urgent First)</option>
+                <option value="priority">🔥 Priority (Urgent)</option>
                 <option value="dueDateTime">📅 Due Date</option>
                 <option value="createdAt">✨ Recently Created</option>
                 <option value="title">🔤 Alphabetical (Title)</option>
@@ -963,7 +972,7 @@
             </div>
 
             <!-- View Mode Switch (Grid vs List) -->
-            <div class="flex p-0.5 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
+            <div class="flex p-0.5 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs flex-shrink-0">
               <button onclick="setViewMode('grid')" id="btnViewGrid" title="Grid View" class="p-1.5 rounded-lg bg-indigo-600 text-white transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
               </button>
@@ -975,7 +984,7 @@
         </div>
 
         <!-- Category Tags Carousel -->
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide text-xs" id="categoryChipsContainer">
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide text-xs max-w-full w-full min-w-0" id="categoryChipsContainer">
           <!-- Dynamic Category Pills -->
         </div>
 
@@ -1062,7 +1071,7 @@
         <!-- Priority Selector -->
         <div>
           <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Priority Level</label>
-          <div class="grid grid-cols-4 gap-2" id="formPriorityGroup">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="formPriorityGroup">
             <button type="button" onclick="selectModalPriority('urgent')" id="pOpt-urgent" class="py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all border-red-300 dark:border-red-500/40 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/60">
               🔴 Urgent
             </button>
@@ -2149,34 +2158,34 @@
         }
 
         return `
-          <div class="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 border-l-4 ${pc.border} rounded-2xl p-4 shadow-sm hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md transition-all flex flex-col justify-between group ${t.isCompleted ? 'opacity-65' : ''}">
-            <div>
-              <div class="flex items-center justify-between gap-2 mb-2.5">
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="px-2 py-0.5 rounded-full border text-[10px] font-extrabold uppercase tracking-wider ${pc.badge}">
+          <div class="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 border-l-4 ${pc.border} rounded-2xl p-3 sm:p-4 shadow-sm hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md transition-all flex flex-col justify-between group ${t.isCompleted ? 'opacity-65' : ''} min-w-0 max-w-full">
+            <div class="min-w-0">
+              <div class="flex items-center justify-between gap-1.5 mb-2.5 flex-wrap min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+                  <span class="px-2 py-0.5 rounded-full border text-[10px] font-extrabold uppercase tracking-wider ${pc.badge} whitespace-nowrap">
                     ${pc.icon}
                   </span>
-                  <span class="px-2 py-0.5 rounded-full border text-[10px] font-semibold ${deadlineClass}">
+                  <span class="px-2 py-0.5 rounded-full border text-[10px] font-semibold ${deadlineClass} whitespace-nowrap">
                     ${deadlineLabel}
                   </span>
                 </div>
                 ${!t.isCompleted ? `
-                  <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-md border border-indigo-200 dark:border-indigo-800/40" title="Smart Algorithm Composite Score">
+                  <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-md border border-indigo-200 dark:border-indigo-800/40 whitespace-nowrap flex-shrink-0" title="Smart Algorithm Composite Score">
                     ⚡ ${score} pts
                   </span>
                 ` : ''}
               </div>
 
-              <div class="flex items-start gap-3 mb-2">
+              <div class="flex items-start gap-2.5 sm:gap-3 mb-2 min-w-0">
                 <button onclick="toggleTask('${t._id}')" class="mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center text-xs flex-shrink-0 transition-colors ${t.isCompleted ? 'bg-emerald-500 border-emerald-500 text-white font-bold' : 'border-slate-300 dark:border-slate-600 hover:border-indigo-500 bg-white dark:bg-transparent text-transparent hover:text-slate-400'}">
                   ✓
                 </button>
-                <div class="flex-1 cursor-pointer" onclick="openDetailModal('${t._id}')">
-                  <h4 class="text-sm font-bold leading-snug transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-300 ${t.isCompleted ? 'line-through text-slate-400' : 'text-slate-900 dark:text-white'}">
+                <div class="flex-1 min-w-0 cursor-pointer overflow-hidden" onclick="openDetailModal('${t._id}')">
+                  <h4 class="text-xs sm:text-sm font-bold leading-snug transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-300 ${t.isCompleted ? 'line-through text-slate-400' : 'text-slate-900 dark:text-white'} break-words">
                     ${escapeHtml(t.title)}
                   </h4>
                   ${t.description ? `
-                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                    <p class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed break-words">
                       ${escapeHtml(t.description)}
                     </p>
                   ` : ''}
@@ -2184,20 +2193,20 @@
               </div>
             </div>
 
-            <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2 mt-3 text-xs">
-              <div class="flex items-center gap-1 flex-wrap overflow-hidden">
+            <div class="pt-2.5 sm:pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2 mt-2.5 sm:mt-3 text-xs min-w-0">
+              <div class="flex items-center gap-1 flex-wrap overflow-hidden min-w-0">
                 ${(t.category || []).map(c => `
-                  <span onclick="setCategoryFilter('${c}')" class="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors">
+                  <span onclick="setCategoryFilter('${c}')" class="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors truncate max-w-[100px]">
                     #${escapeHtml(c)}
                   </span>
                 `).join('')}
               </div>
 
-              <div class="flex items-center gap-1">
-                <button onclick="openEditTaskModal('${t._id}')" title="Edit Task" class="p-1 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <div class="flex items-center gap-1 flex-shrink-0">
+                <button onclick="openEditTaskModal('${t._id}')" title="Edit Task" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </button>
-                <button onclick="deleteTask('${t._id}')" title="Delete Task" class="p-1 rounded-lg text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <button onclick="deleteTask('${t._id}')" title="Delete Task" class="p-1.5 rounded-lg text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 </button>
               </div>
