@@ -3,6 +3,7 @@ apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
 react {
+    autolinkLibrariesWithApp()
     /* Folders */
     //   root = file("../..")
     //   reactNativeDir = file("../../node_modules/react-native")
