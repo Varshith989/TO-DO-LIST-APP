@@ -1,0 +1,22 @@
+{
+  "name": "taskmaster-pro-suite",
+  "version": "1.0.0",
+  "description": "TaskMaster Pro - Full-Stack Web Application & Android App",
+  "scripts": {
+    "dev": "npm --prefix backend run dev",
+    "start": "npm --prefix backend run start",
+    "build": "npm --prefix backend run build",
+    "test": "npm --prefix backend run test:api",
+    "seed": "npm --prefix backend run seed",
+    "mobile": "npm --prefix mobile run android"
+  },
+  "keywords": [
+    "todo",
+    "web-application",
+    "android",
+    "apk",
+    "fullstack",
+    "typescript"
+  ],
+  "license": "ISC"
+}

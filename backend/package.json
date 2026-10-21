@@ -1,6 +1,7 @@
 {
   "name": "todo-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Production-grade Node.js/Express TypeScript MongoDB backend API for Task Management",
   "main": "dist/server.js",
   "scripts": {

@@ -40,25 +40,13 @@ export function createApp(): Application {
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-  // Serve static interactive mobile simulator
+  // Serve static web application
   const publicPath = path.join(__dirname, '../public');
+  app.use(express.static(publicPath));
   app.use('/public', express.static(publicPath));
-  app.get('/app', (_req: Request, res: Response) => {
-    res.sendFile(path.join(publicPath, 'index.html'));
-  });
 
-  // Root welcome route
-  app.get('/', (_req: Request, res: Response) => {
-    res.status(200).json({
-      name: 'TaskMaster Pro API',
-      version: '1.0.0',
-      simulator: '/app',
-      docs: '/api/health',
-      endpoints: {
-        auth: '/api/auth',
-        tasks: '/api/tasks',
-      },
-    });
+  app.get(['/', '/app'], (_req: Request, res: Response) => {
+    res.sendFile(path.join(publicPath, 'index.html'));
   });
 
   // Mount API routes
