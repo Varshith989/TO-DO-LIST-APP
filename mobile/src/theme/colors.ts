@@ -1,0 +1,75 @@
+export const colors = {
+  // Light Theme
+  light: {
+    background: '#F8FAFC',
+    surface: '#FFFFFF',
+    surfaceSecondary: '#F1F5F9',
+    card: '#FFFFFF',
+    border: '#E2E8F0',
+    borderFocused: '#6366F1',
+    text: '#0F172A',
+    textSecondary: '#64748B',
+    textMuted: '#94A3B8',
+    primary: '#6366F1',
+    primaryDark: '#4F46E5',
+    primaryLight: '#EEF2FF',
+    accent: '#8B5CF6',
+    danger: '#EF4444',
+    warning: '#F59E0B',
+    success: '#10B981',
+    info: '#3B82F6',
+    shadow: 'rgba(15, 23, 42, 0.08)',
+    overlay: 'rgba(15, 23, 42, 0.5)',
+  },
+  // Dark Theme (High-contrast slate/indigo aesthetic)
+  dark: {
+    background: '#0B0F19',
+    surface: '#111827',
+    surfaceSecondary: '#1F2937',
+    card: '#182234',
+    border: '#374151',
+    borderFocused: '#818CF8',
+    text: '#F9FAFB',
+    textSecondary: '#9CA3AF',
+    textMuted: '#6B7280',
+    primary: '#6366F1',
+    primaryDark: '#4F46E5',
+    primaryLight: '#312E81',
+    accent: '#A78BFA',
+    danger: '#F87171',
+    warning: '#FBBF24',
+    success: '#34D399',
+    info: '#60A5FA',
+    shadow: 'rgba(0, 0, 0, 0.35)',
+    overlay: 'rgba(0, 0, 0, 0.75)',
+  },
+  // Priority Accent Colors
+  priority: {
+    urgent: {
+      color: '#EF4444',
+      bg: '#FEE2E2',
+      darkBg: '#7F1D1D',
+      label: 'Urgent',
+    },
+    high: {
+      color: '#F59E0B',
+      bg: '#FEF3C7',
+      darkBg: '#78350F',
+      label: 'High',
+    },
+    medium: {
+      color: '#3B82F6',
+      bg: '#DBEAFE',
+      darkBg: '#1E3A8A',
+      label: 'Medium',
+    },
+    low: {
+      color: '#10B981',
+      bg: '#D1FAE5',
+      darkBg: '#064E3B',
+      label: 'Low',
+    },
+  },
+};
+
+export type ThemeColors = typeof colors.light;
