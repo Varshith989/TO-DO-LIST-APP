@@ -4,6 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TaskMaster Pro - Firebase Cloud Web App</title>
+  <!-- Immediate Theme Initialization (Prevents FOUC) -->
+  <script>
+    (function() {
+      window.currentTheme = localStorage.getItem('taskmaster_theme') || 'dark';
+      if (window.currentTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      }
+    })();
+
+    window.applyTheme = function(theme) {
+      window.currentTheme = theme;
+      localStorage.setItem('taskmaster_theme', theme);
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      const authIcon = document.getElementById('authThemeIcon');
+      const btn = document.getElementById('themeToggleBtn');
+      const authBtn = document.getElementById('authThemeToggleBtn');
+
+      if (theme === 'dark') {
+        html.classList.add('dark');
+        html.classList.remove('light');
+        if (icon) icon.innerText = '🌙';
+        if (authIcon) authIcon.innerText = '🌙';
+        if (btn) btn.setAttribute('title', 'Switch to Light Theme');
+        if (authBtn) authBtn.setAttribute('title', 'Switch to Light Theme');
+      } else {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        if (icon) icon.innerText = '☀️';
+        if (authIcon) authIcon.innerText = '☀️';
+        if (btn) btn.setAttribute('title', 'Switch to Dark Theme');
+        if (authBtn) authBtn.setAttribute('title', 'Switch to Dark Theme');
+      }
+
+      if (typeof window.renderAllTasks === 'function') {
+        window.renderAllTasks();
+      }
+    };
+
+    window.toggleTheme = function() {
+      window.applyTheme(window.currentTheme === 'dark' ? 'light' : 'dark');
+    };
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -44,12 +91,590 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .animate-fade-in { animation: fadeIn 0.2s ease-out forwards; }
+    /* ========================================================= */
+    /* THEME STYLES - LIGHT MODE TRANSFORMS                      */
+    /* ========================================================= */
+    body, #appContainer, header, input, select, textarea, button, tr {
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    html.light,
+    html:not(.dark) {
+      color-scheme: light;
+    }
+    html.dark {
+      color-scheme: dark;
+    }
+
+    html.light body,
+    html:not(.dark) body {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+
+    html.light #appContainer,
+    html:not(.dark) #appContainer {
+      background-color: #f8fafc !important;
+    }
+
+    /* Auth View Light Mode */
+    html.light #authContainer,
+    html:not(.dark) #authContainer {
+      background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 50%, #ede9fe 100%) !important;
+    }
+    html.light #authContainer > div,
+    html:not(.dark) #authContainer > div {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1) !important;
+    }
+    html.light #authContainer h1,
+    html:not(.dark) #authContainer h1 {
+      color: #0f172a !important;
+    }
+    html.light #authContainer .text-slate-400,
+    html:not(.dark) #authContainer .text-slate-400 {
+      color: #64748b !important;
+    }
+    html.light #authContainer .text-slate-300,
+    html:not(.dark) #authContainer .text-slate-300 {
+      color: #334155 !important;
+    }
+    html.light #authContainer .bg-slate-800\/80,
+    html:not(.dark) #authContainer .bg-slate-800\/80 {
+      background-color: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+    }
+    html.light #authContainer input,
+    html:not(.dark) #authContainer input {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light #authContainer input::placeholder,
+    html:not(.dark) #authContainer input::placeholder {
+      color: #94a3b8 !important;
+    }
+    html.light #authContainer .border-slate-800,
+    html:not(.dark) #authContainer .border-slate-800 {
+      border-color: #e2e8f0 !important;
+    }
+    html.light #authContainer span.bg-slate-900,
+    html:not(.dark) #authContainer span.bg-slate-900 {
+      background-color: #ffffff !important;
+      color: #64748b !important;
+    }
+    html.light #btnGoogleSignIn,
+    html:not(.dark) #btnGoogleSignIn {
+      background-color: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      color: #1e293b !important;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+    html.light #btnGoogleSignIn:hover,
+    html:not(.dark) #btnGoogleSignIn:hover {
+      background-color: #f8fafc !important;
+      border-color: #94a3b8 !important;
+    }
+    html.light button[onclick="quickGuestOrDemoLogin()"],
+    html:not(.dark) button[onclick="quickGuestOrDemoLogin()"] {
+      background-color: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #b45309 !important;
+    }
+
+    /* Top Navigation Bar */
+    html.light header,
+    html:not(.dark) header {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+    html.light header h1,
+    html:not(.dark) header h1 {
+      color: #0f172a !important;
+    }
+    html.light header p,
+    html:not(.dark) header p {
+      color: #64748b !important;
+    }
+    html.light #cloudStatusBadge,
+    html:not(.dark) #cloudStatusBadge {
+      background-color: #fffbeb !important;
+      border-color: #fde68a !important;
+      color: #b45309 !important;
+    }
+    html.light #globalSearchInput,
+    html.light input[placeholder="Search tasks..."],
+    html:not(.dark) #globalSearchInput,
+    html:not(.dark) input[placeholder="Search tasks..."] {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light #globalSearchInput::placeholder,
+    html.light input[placeholder="Search tasks..."]::placeholder,
+    html:not(.dark) #globalSearchInput::placeholder,
+    html:not(.dark) input[placeholder="Search tasks..."]::placeholder {
+      color: #94a3b8 !important;
+    }
+    html.light #globalSearchInput:focus,
+    html.light input[placeholder="Search tasks..."]:focus,
+    html:not(.dark) #globalSearchInput:focus,
+    html:not(.dark) input[placeholder="Search tasks..."]:focus {
+      background-color: #ffffff !important;
+      border-color: #6366f1 !important;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+    }
+    html.light #themeToggleBtn,
+    html.light #authThemeToggleBtn,
+    html.light button[title="Export all tasks to JSON"],
+    html:not(.dark) #themeToggleBtn,
+    html:not(.dark) #authThemeToggleBtn,
+    html:not(.dark) button[title="Export all tasks to JSON"] {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #334155 !important;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+    html.light #themeToggleBtn:hover,
+    html.light #authThemeToggleBtn:hover,
+    html.light button[title="Export all tasks to JSON"]:hover,
+    html:not(.dark) #themeToggleBtn:hover,
+    html:not(.dark) #authThemeToggleBtn:hover,
+    html:not(.dark) button[title="Export all tasks to JSON"]:hover {
+      background-color: #f1f5f9 !important;
+      color: #0f172a !important;
+      border-color: #94a3b8 !important;
+    }
+    html.light #navUserName,
+    html:not(.dark) #navUserName {
+      color: #0f172a !important;
+    }
+    html.light #navUserEmail,
+    html:not(.dark) #navUserEmail {
+      color: #64748b !important;
+    }
+    html.light .border-l.border-slate-800,
+    html:not(.dark) .border-l.border-slate-800 {
+      border-color: #e2e8f0 !important;
+    }
+    html.light button[title="Sign Out"],
+    html:not(.dark) button[title="Sign Out"] {
+      color: #64748b !important;
+    }
+    html.light button[title="Sign Out"]:hover,
+    html:not(.dark) button[title="Sign Out"]:hover {
+      color: #ef4444 !important;
+      background-color: #fee2e2 !important;
+    }
+
+    /* Hero Stats Cards */
+    html.light .grid.grid-cols-2.md\:grid-cols-4 > div,
+    html:not(.dark) .grid.grid-cols-2.md\:grid-cols-4 > div {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05) !important;
+    }
+    html.light .grid.grid-cols-2.md\:grid-cols-4 .text-slate-400,
+    html:not(.dark) .grid.grid-cols-2.md\:grid-cols-4 .text-slate-400 {
+      color: #64748b !important;
+    }
+    html.light #statTotal,
+    html:not(.dark) #statTotal {
+      color: #0f172a !important;
+    }
+    html.light #statCompletedRate,
+    html:not(.dark) #statCompletedRate {
+      color: #059669 !important;
+    }
+    html.light #statUrgent,
+    html:not(.dark) #statUrgent {
+      color: #dc2626 !important;
+    }
+    html.light #statOverdue,
+    html:not(.dark) #statOverdue {
+      color: #d97706 !important;
+    }
+    html.light .grid.grid-cols-2.md\:grid-cols-4 .bg-slate-800,
+    html:not(.dark) .grid.grid-cols-2.md\:grid-cols-4 .bg-slate-800 {
+      background-color: #f1f5f9 !important;
+    }
+    html.light .grid.grid-cols-2.md\:grid-cols-4 .bg-indigo-950\/60,
+    html:not(.dark) .grid.grid-cols-2.md\:grid-cols-4 .bg-indigo-950\/60 {
+      background-color: #eef2ff !important;
+      color: #4f46e5 !important;
+      border-color: #c7d2fe !important;
+    }
+    html.light .grid.grid-cols-2.md\:grid-cols-4 .bg-emerald-950\/60,
+    html:not(.dark) .grid.grid-cols-2.md\:grid-cols-4 .bg-emerald-950\/60 {
+      background-color: #ecfdf5 !important;
+      color: #059669 !important;
+      border-color: #a7f3d0 !important;
+    }
+    html.light .grid.grid-cols-2.md\:grid-cols-4 .bg-red-950\/60,
+    html:not(.dark) .grid.grid-cols-2.md\:grid-cols-4 .bg-red-950\/60 {
+      background-color: #fef2f2 !important;
+      color: #dc2626 !important;
+      border-color: #fecaca !important;
+    }
+    html.light .grid.grid-cols-2.md\:grid-cols-4 .bg-amber-950\/60,
+    html:not(.dark) .grid.grid-cols-2.md\:grid-cols-4 .bg-amber-950\/60 {
+      background-color: #fffbeb !important;
+      color: #d97706 !important;
+      border-color: #fde68a !important;
+    }
+
+    /* Filter Toolbar */
+    html.light .bg-slate-900\/70,
+    html:not(.dark) .bg-slate-900\/70 {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+    html.light .bg-slate-800\/90,
+    html.light .bg-slate-800,
+    html:not(.dark) .bg-slate-800\/90,
+    html:not(.dark) .bg-slate-800 {
+      background-color: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+      color: #334155 !important;
+    }
+    html.light #btnFilterPending,
+    html.light #btnFilterCompleted,
+    html.light #btnViewList,
+    html:not(.dark) #btnFilterPending,
+    html:not(.dark) #btnFilterCompleted,
+    html:not(.dark) #btnViewList {
+      color: #64748b !important;
+    }
+    html.light #btnFilterPending:hover,
+    html.light #btnFilterCompleted:hover,
+    html.light #btnViewList:hover,
+    html:not(.dark) #btnFilterPending:hover,
+    html:not(.dark) #btnFilterCompleted:hover,
+    html:not(.dark) #btnViewList:hover {
+      color: #0f172a !important;
+    }
+    html.light #priorityFilterSelect,
+    html.light #sortSelect,
+    html:not(.dark) #priorityFilterSelect,
+    html:not(.dark) #sortSelect {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #1e293b !important;
+    }
+    html.light #categoryChipsContainer button:not(.bg-indigo-600),
+    html:not(.dark) #categoryChipsContainer button:not(.bg-indigo-600) {
+      background-color: #f1f5f9 !important;
+      color: #475569 !important;
+      border-color: #e2e8f0 !important;
+    }
+    html.light #categoryChipsContainer button:not(.bg-indigo-600):hover,
+    html:not(.dark) #categoryChipsContainer button:not(.bg-indigo-600):hover {
+      background-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+
+    /* Task Cards (Grid View) */
+    html.light #tasksGrid > div,
+    html:not(.dark) #tasksGrid > div {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05) !important;
+    }
+    html.light #tasksGrid > div:hover,
+    html:not(.dark) #tasksGrid > div:hover {
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
+    }
+    html.light #tasksGrid h4.text-white,
+    html:not(.dark) #tasksGrid h4.text-white {
+      color: #0f172a !important;
+    }
+    html.light #tasksGrid h4:hover,
+    html:not(.dark) #tasksGrid h4:hover {
+      color: #4f46e5 !important;
+    }
+    html.light #tasksGrid p.text-slate-400,
+    html:not(.dark) #tasksGrid p.text-slate-400 {
+      color: #475569 !important;
+    }
+    html.light #tasksGrid .border-slate-800\/80,
+    html:not(.dark) #tasksGrid .border-slate-800\/80 {
+      border-color: #f1f5f9 !important;
+    }
+    html.light #tasksGrid button.border-slate-600,
+    html:not(.dark) #tasksGrid button.border-slate-600 {
+      border-color: #cbd5e1 !important;
+      background-color: #ffffff !important;
+    }
+    html.light #tasksGrid button.border-slate-600:hover,
+    html:not(.dark) #tasksGrid button.border-slate-600:hover {
+      border-color: #6366f1 !important;
+    }
+    html.light #tasksGrid span.bg-slate-800,
+    html:not(.dark) #tasksGrid span.bg-slate-800 {
+      background-color: #f1f5f9 !important;
+      color: #475569 !important;
+    }
+    html.light #tasksGrid span.bg-slate-800:hover,
+    html:not(.dark) #tasksGrid span.bg-slate-800:hover {
+      background-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    html.light #tasksGrid button.text-slate-400,
+    html:not(.dark) #tasksGrid button.text-slate-400 {
+      color: #94a3b8 !important;
+    }
+    html.light #tasksGrid button.text-slate-400:hover,
+    html:not(.dark) #tasksGrid button.text-slate-400:hover {
+      background-color: #f1f5f9 !important;
+      color: #4f46e5 !important;
+    }
+    html.light #tasksGrid button[title="Delete Task"]:hover,
+    html:not(.dark) #tasksGrid button[title="Delete Task"]:hover {
+      background-color: #fef2f2 !important;
+      color: #ef4444 !important;
+    }
+
+    /* Priority & Score Badges in Task Cards */
+    html.light .text-indigo-400.bg-indigo-950\/60,
+    html:not(.dark) .text-indigo-400.bg-indigo-950\/60 {
+      background-color: #eef2ff !important;
+      color: #4f46e5 !important;
+      border-color: #c7d2fe !important;
+    }
+    html.light .bg-red-950\/80,
+    html:not(.dark) .bg-red-950\/80 {
+      background-color: #fef2f2 !important;
+      color: #dc2626 !important;
+      border-color: #fecaca !important;
+    }
+    html.light .bg-amber-950\/80,
+    html:not(.dark) .bg-amber-950\/80 {
+      background-color: #fffbeb !important;
+      color: #b45309 !important;
+      border-color: #fde68a !important;
+    }
+    html.light .bg-indigo-950\/80,
+    html:not(.dark) .bg-indigo-950\/80 {
+      background-color: #eef2ff !important;
+      color: #4338ca !important;
+      border-color: #c7d2fe !important;
+    }
+    html.light .bg-emerald-950\/80,
+    html.light .bg-emerald-950\/60,
+    html:not(.dark) .bg-emerald-950\/80,
+    html:not(.dark) .bg-emerald-950\/60 {
+      background-color: #ecfdf5 !important;
+      color: #047857 !important;
+      border-color: #a7f3d0 !important;
+    }
+    html.light .bg-slate-800.text-slate-300,
+    html.light .bg-slate-800.text-slate-400,
+    html:not(.dark) .bg-slate-800.text-slate-300,
+    html:not(.dark) .bg-slate-800.text-slate-400 {
+      background-color: #f1f5f9 !important;
+      color: #475569 !important;
+      border-color: #e2e8f0 !important;
+    }
+
+    /* List Table View */
+    html.light #tasksListTable,
+    html:not(.dark) #tasksListTable {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+    html.light #tasksListTable thead,
+    html:not(.dark) #tasksListTable thead {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #64748b !important;
+    }
+    html.light #tasksListTable tbody tr:hover,
+    html:not(.dark) #tasksListTable tbody tr:hover {
+      background-color: #f8fafc !important;
+    }
+    html.light #tasksListTable .divide-slate-800\/60 > tr,
+    html:not(.dark) #tasksListTable .divide-slate-800\/60 > tr {
+      border-color: #f1f5f9 !important;
+    }
+    html.light #tasksTableBody .text-white,
+    html:not(.dark) #tasksTableBody .text-white {
+      color: #0f172a !important;
+    }
+    html.light #tasksTableBody .text-slate-300,
+    html:not(.dark) #tasksTableBody .text-slate-300 {
+      color: #475569 !important;
+    }
+    html.light #tasksTableBody .text-slate-400,
+    html:not(.dark) #tasksTableBody .text-slate-400 {
+      color: #64748b !important;
+    }
+
+    /* Modals & Dialogs */
+    html.light #taskModal,
+    html.light #detailModal,
+    html:not(.dark) #taskModal,
+    html:not(.dark) #detailModal {
+      background-color: rgba(15, 23, 42, 0.5) !important;
+    }
+    html.light #taskModal > div,
+    html.light #detailModal > div,
+    html:not(.dark) #taskModal > div,
+    html:not(.dark) #detailModal > div {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2) !important;
+    }
+    html.light #modalTitle,
+    html.light #detailTitle,
+    html:not(.dark) #modalTitle,
+    html:not(.dark) #detailTitle {
+      color: #0f172a !important;
+    }
+    html.light #modalSubtitle,
+    html.light #detailDesc,
+    html:not(.dark) #modalSubtitle,
+    html:not(.dark) #detailDesc {
+      color: #475569 !important;
+    }
+    html.light #taskModal .border-slate-800,
+    html.light #detailModal .border-slate-800,
+    html:not(.dark) #taskModal .border-slate-800,
+    html:not(.dark) #detailModal .border-slate-800 {
+      border-color: #e2e8f0 !important;
+    }
+    html.light #taskModal label,
+    html:not(.dark) #taskModal label {
+      color: #334155 !important;
+    }
+    html.light #taskModal input:not([type="hidden"]),
+    html.light #taskModal textarea,
+    html:not(.dark) #taskModal input:not([type="hidden"]),
+    html:not(.dark) #taskModal textarea {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light #taskModal input::placeholder,
+    html.light #taskModal textarea::placeholder,
+    html:not(.dark) #taskModal input::placeholder,
+    html:not(.dark) #taskModal textarea::placeholder {
+      color: #94a3b8 !important;
+    }
+    html.light #taskModal input:focus,
+    html.light #taskModal textarea:focus,
+    html:not(.dark) #taskModal input:focus,
+    html:not(.dark) #taskModal textarea:focus {
+      border-color: #6366f1 !important;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+    }
+    html.light #pOpt-urgent,
+    html:not(.dark) #pOpt-urgent {
+      background-color: #fef2f2 !important;
+      color: #dc2626 !important;
+      border-color: #fecaca !important;
+    }
+    html.light #pOpt-high,
+    html:not(.dark) #pOpt-high {
+      background-color: #fffbeb !important;
+      color: #d97706 !important;
+      border-color: #fde68a !important;
+    }
+    html.light #pOpt-medium,
+    html:not(.dark) #pOpt-medium {
+      background-color: #eef2ff !important;
+      color: #4f46e5 !important;
+      border-color: #c7d2fe !important;
+    }
+    html.light #pOpt-low,
+    html:not(.dark) #pOpt-low {
+      background-color: #ecfdf5 !important;
+      color: #059669 !important;
+      border-color: #a7f3d0 !important;
+    }
+    html.light #taskModal button.bg-slate-800,
+    html.light #detailModal button.bg-slate-800,
+    html:not(.dark) #taskModal button.bg-slate-800,
+    html:not(.dark) #detailModal button.bg-slate-800 {
+      background-color: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+      color: #334155 !important;
+    }
+    html.light #taskModal button.bg-slate-800:hover,
+    html.light #detailModal button.bg-slate-800:hover,
+    html:not(.dark) #taskModal button.bg-slate-800:hover,
+    html:not(.dark) #detailModal button.bg-slate-800:hover {
+      background-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    html.light #detailModal .bg-slate-800\/60,
+    html:not(.dark) #detailModal .bg-slate-800\/60 {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+    }
+    html.light #detailDueDate,
+    html.light #detailDeadline,
+    html:not(.dark) #detailDueDate,
+    html:not(.dark) #detailDeadline {
+      color: #0f172a !important;
+    }
+    html.light #detailCategories span,
+    html:not(.dark) #detailCategories span {
+      background-color: #f1f5f9 !important;
+      color: #334155 !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+    html.light #emptyState,
+    html:not(.dark) #emptyState {
+      background-color: rgba(255, 255, 255, 0.7) !important;
+      border-color: #cbd5e1 !important;
+    }
+    html.light #emptyState h3,
+    html:not(.dark) #emptyState h3 {
+      color: #0f172a !important;
+    }
+    html.light #emptyState p,
+    html:not(.dark) #emptyState p {
+      color: #64748b !important;
+    }
+
+    /* Toast in Light Mode */
+    html.light #toastContainer > div,
+    html:not(.dark) #toastContainer > div {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    }
+    html.light .bg-emerald-950\/90,
+    html:not(.dark) .bg-emerald-950\/90 {
+      background-color: #ecfdf5 !important;
+      border-color: #a7f3d0 !important;
+      color: #065f46 !important;
+    }
+    html.light .bg-red-950\/90,
+    html:not(.dark) .bg-red-950\/90 {
+      background-color: #fef2f2 !important;
+      border-color: #fecaca !important;
+      color: #991b1b !important;
+    }
+    html.light .bg-indigo-950\/90,
+    html:not(.dark) .bg-indigo-950\/90 {
+      background-color: #eef2ff !important;
+      border-color: #c7d2fe !important;
+      color: #3730a3 !important;
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen antialiased transition-colors duration-200">
 
   <!-- ================= AUTH VIEW ================= -->
-  <div id="authContainer" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
+  <div id="authContainer" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 relative">
+    <!-- Auth Theme Toggle Button -->
+    <button onclick="toggleTheme()" id="authThemeToggleBtn" title="Toggle Light/Dark Theme" class="absolute top-5 right-5 p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white transition-all shadow-md">
+      <span id="authThemeIcon">🌙</span>
+    </button>
     <div class="w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-3xl p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden">
       <!-- Glow background -->
       <div class="absolute -top-24 -left-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -636,8 +1261,10 @@
     let selectedModalPriority = 'medium';
 
     // Theme Management
-    let currentTheme = localStorage.getItem('taskmaster_theme') || 'dark';
-    function applyTheme(theme) {
+    // Theme handled by global window.applyTheme
+    window.renderAllTasks = () => { try { renderAll(); } catch(e){} };
+    function applyTheme(theme) { window.applyTheme(theme); return; }
+    function _legacyApplyTheme(theme) {
       currentTheme = theme;
       localStorage.setItem('taskmaster_theme', theme);
       const icon = document.getElementById('themeIcon');
@@ -651,7 +1278,7 @@
         if (icon) icon.innerText = '☀️';
       }
     }
-    window.toggleTheme = () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    // Theme toggle connected to global window.toggleTheme
 
     // Default Demo Tasks
     function getDefaultSeedTasks() {
@@ -747,7 +1374,7 @@
     // INITIALIZATION & AUTH LISTENER
     // -------------------------------------------------------------
     window.addEventListener('DOMContentLoaded', () => {
-      applyTheme(currentTheme);
+      window.applyTheme(window.currentTheme || 'dark');
       applySchedulePreset(4, 8);
 
       // Keyboard shortcuts
@@ -1255,11 +1882,12 @@
       const task = allTasks.find(t => t._id === id);
       if (!task) return;
 
+      const isDark = (window.currentTheme || 'dark') === 'dark';
       const priorityBadges = {
-        urgent: `<span class="px-2.5 py-1 rounded-full bg-red-950/80 border border-red-800 text-red-400 font-bold text-xs uppercase tracking-wider">🔴 Urgent Priority</span>`,
-        high: `<span class="px-2.5 py-1 rounded-full bg-amber-950/80 border border-amber-800 text-amber-400 font-bold text-xs uppercase tracking-wider">🟠 High Priority</span>`,
-        medium: `<span class="px-2.5 py-1 rounded-full bg-indigo-950/80 border border-indigo-800 text-indigo-300 font-bold text-xs uppercase tracking-wider">🔵 Medium Priority</span>`,
-        low: `<span class="px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-800 text-emerald-400 font-bold text-xs uppercase tracking-wider">🟢 Low Priority</span>`
+        urgent: `<span class="px-2.5 py-1 rounded-full ${isDark ? 'bg-red-950/80 border-red-800 text-red-400' : 'bg-red-50 border-red-200 text-red-700'} border font-bold text-xs uppercase tracking-wider">🔴 Urgent Priority</span>`,
+        high: `<span class="px-2.5 py-1 rounded-full ${isDark ? 'bg-amber-950/80 border-amber-800 text-amber-400' : 'bg-amber-50 border-amber-200 text-amber-700'} border font-bold text-xs uppercase tracking-wider">🟠 High Priority</span>`,
+        medium: `<span class="px-2.5 py-1 rounded-full ${isDark ? 'bg-indigo-950/80 border-indigo-800 text-indigo-300' : 'bg-indigo-50 border-indigo-200 text-indigo-700'} border font-bold text-xs uppercase tracking-wider">🔵 Medium Priority</span>`,
+        low: `<span class="px-2.5 py-1 rounded-full ${isDark ? 'bg-emerald-950/80 border-emerald-800 text-emerald-400' : 'bg-emerald-50 border-emerald-200 text-emerald-700'} border font-bold text-xs uppercase tracking-wider">🟢 Low Priority</span>`
       };
 
       document.getElementById('detailPriorityBadge').innerHTML = priorityBadges[task.priority] || priorityBadges.medium;
@@ -1453,11 +2081,12 @@
       }
       emptyState.classList.add('hidden');
 
+      const isDark = (window.currentTheme || 'dark') === 'dark';
       const priorityConfigs = {
-        urgent: { border: 'border-l-red-500', badge: 'bg-red-950/80 text-red-400 border-red-800/80', icon: '🔴 Urgent' },
-        high: { border: 'border-l-amber-500', badge: 'bg-amber-950/80 text-amber-400 border-amber-800/80', icon: '🟠 High' },
-        medium: { border: 'border-l-indigo-500', badge: 'bg-indigo-950/80 text-indigo-400 border-indigo-800/80', icon: '🔵 Medium' },
-        low: { border: 'border-l-emerald-500', badge: 'bg-emerald-950/80 text-emerald-400 border-emerald-800/80', icon: '🟢 Low' }
+        urgent: { border: 'border-l-red-500', badge: isDark ? 'bg-red-950/80 text-red-400 border-red-800/80' : 'bg-red-50 text-red-700 border-red-200', icon: '🔴 Urgent' },
+        high: { border: 'border-l-amber-500', badge: isDark ? 'bg-amber-950/80 text-amber-400 border-amber-800/80' : 'bg-amber-50 text-amber-700 border-amber-200', icon: '🟠 High' },
+        medium: { border: 'border-l-indigo-500', badge: isDark ? 'bg-indigo-950/80 text-indigo-400 border-indigo-800/80' : 'bg-indigo-50 text-indigo-700 border-indigo-200', icon: '🔵 Medium' },
+        low: { border: 'border-l-emerald-500', badge: isDark ? 'bg-emerald-950/80 text-emerald-400 border-emerald-800/80' : 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: '🟢 Low' }
       };
 
       // 6. Render Grid Cards
@@ -1472,20 +2101,20 @@
 
         if (t.isCompleted) {
           deadlineLabel = '✓ Finished';
-          deadlineClass = 'bg-emerald-950/60 text-emerald-400 border-emerald-800/60';
+          deadlineClass = isDark ? 'bg-emerald-950/60 text-emerald-400 border-emerald-800/60' : 'bg-emerald-50 text-emerald-700 border-emerald-200';
         } else if (diffHours < 0) {
           deadlineLabel = `🚨 Overdue ${Math.abs(diffHours)}h`;
-          deadlineClass = 'bg-red-950/80 text-red-400 border-red-800 font-bold';
+          deadlineClass = isDark ? 'bg-red-950/80 text-red-400 border-red-800 font-bold' : 'bg-red-50 text-red-700 border-red-200 font-bold';
         } else if (diffHours <= 6) {
           deadlineLabel = `⏰ Due in ${diffHours}h`;
-          deadlineClass = 'bg-amber-950/80 text-amber-300 border-amber-800 font-bold';
+          deadlineClass = isDark ? 'bg-amber-950/80 text-amber-300 border-amber-800 font-bold' : 'bg-amber-50 text-amber-700 border-amber-200 font-bold';
         } else if (diffHours < 48) {
           deadlineLabel = `⏳ Due in ${Math.round(diffHours / 24)}d`;
-          deadlineClass = 'bg-slate-800 text-slate-300 border-slate-700';
+          deadlineClass = isDark ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-slate-100 text-slate-700 border-slate-200';
         } else {
           const d = new Date(t.deadline);
           deadlineLabel = `📅 ${d.toLocaleDateString([], { month: 'short', day: 'numeric' })}`;
-          deadlineClass = 'bg-slate-800 text-slate-400 border-slate-700';
+          deadlineClass = isDark ? 'bg-slate-800 text-slate-400 border-slate-700' : 'bg-slate-100 text-slate-600 border-slate-200';
         }
 
         return `
