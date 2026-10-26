@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-android:
     runs-on: ubuntu-latest
@@ -37,9 +40,22 @@ jobs:
           cd mobile/android
           ./gradlew assembleRelease --no-daemon
 
-      - name: Upload Downloadable APK
+      - name: Upload Downloadable APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: taskmaster-pro-android-release
           path: mobile/android/app/build/outputs/apk/release/*.apk
           if-no-files-found: error
+
+      - name: Publish Direct APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          tag_name: latest
+          name: "TaskMaster Pro Android App"
+          body: "Direct standalone APK download for TaskMaster Pro Android Client."
+          draft: false
+          prerelease: false
+          files: mobile/android/app/build/outputs/apk/release/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
