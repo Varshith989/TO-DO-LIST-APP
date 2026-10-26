@@ -682,7 +682,7 @@
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen antialiased transition-colors duration-200">
 
   <!-- ================= AUTH VIEW ================= -->
-  <div id="authContainer" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-indigo-50/50 to-slate-200 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 relative transition-colors duration-200">
+  <div id="authContainer" class="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-indigo-50/50 to-slate-200 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 relative transition-colors duration-200">
     <!-- Auth Theme Toggle Button -->
     <button onclick="toggleTheme()" id="authThemeToggleBtn" title="Toggle Light/Dark Theme" class="absolute top-5 right-5 p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white transition-all shadow-md">
       <span id="authThemeIcon">🌙</span>
@@ -777,14 +777,36 @@
         </button>
       </div>
 
+      <!-- DOWNLOAD ANDROID APK BUTTON -->
+      <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800/80">
+        <a href="https://github.com/Varshith989/TO-DO-LIST-APP/actions/runs/40195448968/artifacts/12600025941" target="_blank" rel="noopener noreferrer" id="btnDownloadApkAuth" class="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 group">
+          <svg class="w-4 h-4 flex-shrink-0 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.125 12 8.125c-1.8533 0-3.5902.2866-5.1368.8247L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
+          </svg>
+          <span>Download Android App (.APK)</span>
+          <svg class="w-3.5 h-3.5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        </a>
+      </div>
+
       <!-- Auth Error Notification Box -->
       <div id="authAlert" class="hidden mt-4 p-3 rounded-xl bg-red-950/70 border border-red-800/60 text-red-300 text-xs font-medium flex items-center gap-2">
         <svg class="w-4 h-4 flex-shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2"/></svg>
         <span id="authAlertText">Error message</span>
       </div>
     </div>
-  </div>
 
+    <!-- Auth View Bottom Footer -->
+    <footer class="mt-6 text-center z-10 text-xs text-slate-500 dark:text-slate-400 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3">
+      <span>Get TaskMaster Pro on mobile:</span>
+      <a href="https://github.com/Varshith989/TO-DO-LIST-APP/actions/runs/40195448968/artifacts/12600025941" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 font-bold text-emerald-600 dark:text-emerald-400 hover:underline">
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.125 12 8.125c-1.8533 0-3.5902.2866-5.1368.8247L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
+        </svg>
+        <span>Download Android APK (Artifact #12600025941)</span>
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+    </footer>
+  </div>
 
   <!-- ================= MAIN WEB APPLICATION ================= -->
   <div id="appContainer" class="hidden min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
@@ -830,6 +852,14 @@
             <span class="hidden sm:inline">New Task</span>
             <span class="text-[10px] opacity-75 font-mono hidden md:inline ml-1 bg-indigo-700/60 px-1.5 py-0.5 rounded">N</span>
           </button>
+
+          <!-- Download Android APK Button (Header) -->
+          <a href="https://github.com/Varshith989/TO-DO-LIST-APP/actions/runs/40195448968/artifacts/12600025941" target="_blank" rel="noopener noreferrer" id="btnHeaderDownloadApk" title="Download Android App (.APK)" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 border border-emerald-300 dark:border-emerald-700/60 text-emerald-700 dark:text-emerald-300 text-xs font-semibold transition-all shadow-sm">
+            <svg class="w-3.5 h-3.5 flex-shrink-0 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.125 12 8.125c-1.8533 0-3.5902.2866-5.1368.8247L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
+            </svg>
+            <span>Android APK</span>
+          </a>
 
           <!-- Theme Toggle Button -->
           <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Light/Dark Theme" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center flex-shrink-0">
@@ -1034,8 +1064,31 @@
 
     </main>
 
+    <!-- FOOTER WITH ANDROID APP DOWNLOAD -->
+    <footer class="mt-auto py-6 border-t border-slate-200 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/40 backdrop-blur-sm transition-colors duration-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 bg-gradient-to-tr from-amber-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
+            TM
+          </div>
+          <span class="font-bold text-slate-900 dark:text-white">TaskMaster Pro</span>
+          <span>•</span>
+          <span>Full-Stack Cloud Task Management</span>
+        </div>
+        
+        <div class="flex items-center gap-3 flex-wrap justify-center">
+          <span class="text-slate-600 dark:text-slate-400 hidden md:inline">Take your tasks on the go:</span>
+          <a href="https://github.com/Varshith989/TO-DO-LIST-APP/actions/runs/40195448968/artifacts/12600025941" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold transition-all shadow-md shadow-emerald-600/20 group">
+            <svg class="w-4 h-4 flex-shrink-0 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.125 12 8.125c-1.8533 0-3.5902.2866-5.1368.8247L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
+            </svg>
+            <span>Download Android App (.APK)</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          </a>
+        </div>
+      </div>
+    </footer>
   </div>
-
 
   <!-- ================= CREATE & EDIT TASK MODAL ================= -->
   <div id="taskModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
